@@ -23,14 +23,14 @@ const ROLE_DASHBOARD: Record<UserRole, { title: string; stats: { label: string; 
       { label: "Active Listings", value: "12", icon: Leaf },
       { label: "Total Harvest (kg)", value: "18,500", icon: Grains },
       { label: "Pending Orders", value: "4", icon: ShoppingCart },
-      { label: "Revenue (30d)", value: "KSh 142,000", icon: Truck },
+      { label: "Revenue (30d)", value: "₦ 142,000", icon: Truck },
     ],
   },
   buyer: {
     title: "Buyer Dashboard",
     stats: [
       { label: "Active Orders", value: "6", icon: ShoppingCart },
-      { label: "In Escrow", value: "KSh 28,500", icon: Truck },
+      { label: "In Escrow", value: "₦ 28,500", icon: Truck },
       { label: "Saved Farmers", value: "15", icon: Users },
       { label: "Orders Delivered", value: "23", icon: Leaf },
     ],
@@ -204,7 +204,7 @@ export default function App() {
                             <p className="text-xs text-stone-500">{o.items.length} items · {new Date(o.timestamp).toLocaleDateString()}</p>
                           </div>
                           <div className="text-right">
-                            <p className="text-sm font-semibold text-stone-900">KSh {o.totalAmount.toFixed(2)}</p>
+                            <p className="text-sm font-semibold text-stone-900">₦{o.totalAmount.toFixed(2)}</p>
                             <span className={`text-xs font-medium ${
                               o.status === "released" ? "text-emerald-600" : o.status === "disputed" ? "text-red-600" : "text-amber-600"
                             }`}>
@@ -263,8 +263,8 @@ export default function App() {
                       <div key={item.produceId} className="flex items-center justify-between rounded-xl border border-stone-100 bg-stone-50 p-3">
                         <div className="flex-1">
                           <p className="text-sm font-medium text-stone-900">{item.title}</p>
-                          <p className="text-xs text-stone-500">{item.qty}kg × KSh {item.pricePerKg.toFixed(2)}</p>
-                          <p className="text-xs font-semibold text-emerald-700">KSh {(item.pricePerKg * item.qty).toFixed(2)}</p>
+                          <p className="text-xs text-stone-500">{item.qty}kg × ₦{item.pricePerKg.toFixed(2)}</p>
+                          <p className="text-xs font-semibold text-emerald-700">₦{(item.pricePerKg * item.qty).toFixed(2)}</p>
                         </div>
                         <button onClick={() => handleRemoveFromCart(item.produceId)} className="rounded-lg p-2 text-stone-400 hover:bg-red-50 hover:text-red-500">
                           <Trash className="h-4 w-4" />
@@ -279,7 +279,7 @@ export default function App() {
                   <div className="mb-3 flex items-center justify-between">
                     <span className="text-sm font-medium text-stone-500">Total</span>
                     <span className="text-lg font-bold text-emerald-800">
-                      KSh {cart.reduce((sum, c) => sum + c.pricePerKg * c.qty, 0).toFixed(2)}
+                      ₦{cart.reduce((sum, c) => sum + c.pricePerKg * c.qty, 0).toFixed(2)}
                     </span>
                   </div>
                   <button
@@ -302,9 +302,9 @@ export default function App() {
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <div className="flex items-center gap-2">
               <Leaf className="h-5 w-5 text-emerald-600" weight="fill" />
-              <span className="text-sm font-bold text-emerald-900">AgriHarvest</span>
+              <span className="text-sm font-bold text-emerald-900">AgriNovvax</span>
             </div>
-            <p className="text-xs text-stone-400">© 2025 AgriHarvest. Empowering Kenya's agricultural future.</p>
+            <p className="text-xs text-stone-400">© 2025 AgriNovvax. Empowering Nigeria's agricultural future.</p>
           </div>
         </div>
       </footer>

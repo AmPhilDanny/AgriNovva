@@ -200,7 +200,7 @@ export default function SupplyChainTracker() {
                     <div className="flex items-center gap-3">
                       <CurrencyCircleDollar className="h-5 w-5 text-emerald-600" />
                       <div>
-                        <p className="text-sm font-semibold text-stone-900">KSh {active.escrowAmount.toLocaleString()}</p>
+                        <p className="text-sm font-semibold text-stone-900">₦ {active.escrowAmount.toLocaleString()}</p>
                         <p className="text-xs text-stone-500">{active.escrowReleased ? "Released" : "In Escrow"}</p>
                       </div>
                     </div>

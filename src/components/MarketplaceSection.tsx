@@ -195,7 +195,7 @@ export default function MarketplaceSection({ cart, onAddToCart, onRemoveFromCart
                       {item.farmerName}
                     </div>
                     <div className="mt-2 flex items-center justify-between">
-                      <span className="text-lg font-bold text-emerald-800">KSh {item.pricePerKg.toFixed(2)}<span className="text-xs font-normal text-stone-400">/kg</span></span>
+                      <span className="text-lg font-bold text-emerald-800">₦{item.pricePerKg.toFixed(2)}<span className="text-xs font-normal text-stone-400">/kg</span></span>
                       {inCart ? (
                         <span className="flex items-center gap-1 rounded-lg bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">
                           <Check className="h-3 w-3" weight="bold" /> {inCart.qty}kg
@@ -278,7 +278,7 @@ export default function MarketplaceSection({ cart, onAddToCart, onRemoveFromCart
                       {bulkDiscount > 0 && (
                         <p className="text-xs font-medium text-emerald-600">-{(bulkDiscount * 100).toFixed(0)}% bulk discount</p>
                       )}
-                      <p className="text-lg font-bold text-emerald-800">KSh {discountedTotal.toFixed(2)}</p>
+                      <p className="text-lg font-bold text-emerald-800">₦{discountedTotal.toFixed(2)}</p>
                     </div>
                   </div>
                 </div>
@@ -290,7 +290,7 @@ export default function MarketplaceSection({ cart, onAddToCart, onRemoveFromCart
                     className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-emerald-700 py-3 text-sm font-semibold text-white transition-all hover:bg-emerald-600 active:scale-[0.98]"
                   >
                     <ShoppingCart className="h-4 w-4" weight="fill" />
-                    Add to Cart — KSh {discountedTotal.toFixed(2)}
+                    Add to Cart — ₦{discountedTotal.toFixed(2)}
                   </button>
                   <button className="flex items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700 transition-all hover:bg-emerald-100 active:scale-[0.98]">
                     Escrow Buy

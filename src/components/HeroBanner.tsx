@@ -43,7 +43,7 @@ export default function HeroBanner({ role }: HeroBannerProps) {
               , Direct to You
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-emerald-100/80 sm:text-lg">
-              Kenya's trusted platform connecting smallholder farmers with buyers and logistics partners. Transparent pricing, quality guaranteed, and AI-powered agronomy support.
+              Nigeria's trusted platform connecting smallholder farmers with buyers and logistics partners. Transparent pricing, quality guaranteed, and AI-powered agronomy support.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <button className="inline-flex items-center gap-2 rounded-xl bg-amber-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-amber-500/25 transition-all hover:bg-amber-400 active:scale-[0.98]">

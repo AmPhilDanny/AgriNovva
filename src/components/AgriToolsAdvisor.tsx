@@ -209,7 +209,7 @@ export default function AgriToolsAdvisor() {
             <motion.div key="prices" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
               <div className="overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm">
                 <div className="border-b border-stone-100 px-5 py-3">
-                  <p className="text-xs font-medium text-stone-500 uppercase tracking-wider">Commodity Market Prices · Kenya</p>
+                  <p className="text-xs font-medium text-stone-500 uppercase tracking-wider">Commodity Market Prices · Nigeria</p>
                 </div>
                 <div className="divide-y divide-stone-100">
                   {MARKET_PRICES.map((mp, i) => (
