@@ -1,1 +1,64 @@
+# Dependencies
 node_modules
+.pnp
+.pnp.js
+
+# Build outputs
+dist
+build
+out
+.next
+.nuxt
+.cache
+
+# Env
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Vite / TS
+*.tsbuildinfo
+
+# Coverage
+coverage
+
+# Large binaries — never push to GitHub
+*.tflite
+*.bin
+*.zip
+*.mp3
+*.wav
+*.onnx
+models/
+audio/
+tools/
+
+# Misc
+.cache
+temp
+tmp

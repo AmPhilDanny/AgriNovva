@@ -1,18 +1,30 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Toaster, toast } from "sonner";
-import { Grains, Truck, Users, X, ShoppingCart, Trash, Leaf, ArrowRight } from "@phosphor-icons/react";
+import { Grains, Truck, Users, X, ShoppingCart, Trash, Leaf, ArrowRight, PiggyBank, Shield, Building2, Factory, BadgeCheck, FileText, Calculator, HandHeart, MapPin } from "@phosphor-icons/react";
 import type { UserRole, CartItem, EscrowOrder, TabId } from "./types";
 import Navbar from "./components/Navbar";
 import HeroBanner from "./components/HeroBanner";
 import MarketplaceSection from "./components/MarketplaceSection";
 import SupplyChainTracker from "./components/SupplyChainTracker";
 import AgriToolsAdvisor from "./components/AgriToolsAdvisor";
+import InvestmentExchange from "./components/InvestmentExchange";
+import AgentNetwork from "./components/AgentNetwork";
+import InsuranceProducts from "./components/InsuranceProducts";
+import GovernmentDashboard from "./components/GovernmentDashboard";
+import InputVerification from "./components/InputVerification";
+import PriceContracts from "./components/PriceContracts";
 
 const TABS: { id: TabId; label: string; icon: typeof Leaf; roles: UserRole[] }[] = [
   { id: "marketplace", label: "Marketplace", icon: ShoppingCart, roles: ["farmer", "buyer"] },
   { id: "supply-chain", label: "Supply Chain", icon: Truck, roles: ["buyer", "logistics", "farmer"] },
   { id: "agri-advisor", label: "AI Agronomy", icon: Leaf, roles: ["farmer", "buyer", "logistics"] },
+  { id: "investment-exchange", label: "Investment Exchange", icon: PiggyBank, roles: ["buyer", "farmer"] },
+  { id: "agent-network", label: "Agent Network", icon: Users, roles: ["farmer", "buyer", "logistics"] },
+  { id: "insurance", label: "Insurance", icon: Shield, roles: ["farmer", "buyer"] },
+  { id: "government", label: "Government", icon: Building2, roles: ["logistics"] },
+  { id: "input-verification", label: "Input Verification", icon: Factory, roles: ["farmer", "buyer", "logistics"] },
+  { id: "price-contracts", label: "Price Contracts", icon: Calculator, roles: ["farmer", "buyer"] },
   { id: "dashboard", label: "Dashboard", icon: Grains, roles: ["farmer", "buyer", "logistics"] },
 ];
 
@@ -158,6 +170,12 @@ export default function App() {
           )}
           {activeTab === "supply-chain" && <SupplyChainTracker />}
           {activeTab === "agri-advisor" && <AgriToolsAdvisor />}
+          {activeTab === "investment-exchange" && <InvestmentExchange />}
+          {activeTab === "agent-network" && <AgentNetwork />}
+          {activeTab === "insurance" && <InsuranceProducts />}
+          {activeTab === "government" && <GovernmentDashboard />}
+          {activeTab === "input-verification" && <InputVerification />}
+          {activeTab === "price-contracts" && <PriceContracts />}
           {activeTab === "dashboard" && (
             <section className="py-8 sm:py-12">
               <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -302,9 +320,9 @@ export default function App() {
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <div className="flex items-center gap-2">
               <Leaf className="h-5 w-5 text-emerald-600" weight="fill" />
-              <span className="text-sm font-bold text-emerald-900">AgriNovvax</span>
+              <span className="text-sm font-bold text-emerald-900">AgriNovva</span>
             </div>
-            <p className="text-xs text-stone-400">© 2025 AgriNovvax. Empowering Nigeria's agricultural future.</p>
+            <p className="text-xs text-stone-400">© 2025 AgriNovva. Empowering Nigeria's agricultural future.</p>
           </div>
         </div>
       </footer>

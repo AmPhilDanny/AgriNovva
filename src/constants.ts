@@ -1,7 +1,7 @@
 import type { ProduceItem, SupplyChainShipment, MarketPrice, AdvisoryTopic } from "./types";
 
 export const BRAND = {
-  name: "AgriNovvax",
+  name: "AgriNovva",
   tagline: "From Farm to Fork, Transparently",
   description: "Empowering farmers, buyers, and logistics partners with a transparent, AI-driven agricultural marketplace.",
 };
