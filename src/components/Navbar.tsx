@@ -26,7 +26,7 @@ export default function Navbar({ role, onRoleChange, cartCount, onCartOpen }: Na
         {/* Logo */}
         <div className="flex items-center gap-2">
           <Leaf className="h-6 w-6 text-emerald-600" weight="fill" />
-          <span className="text-lg font-bold tracking-tight text-emerald-900">AgriNovvax</span>
+          <span className="text-lg font-bold tracking-tight text-emerald-900">AgriNovva</span>
         </div>
 
         {/* Desktop Nav */}
