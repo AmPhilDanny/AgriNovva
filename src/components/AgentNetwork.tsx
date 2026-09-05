@@ -102,6 +102,15 @@ export default function AgentNetwork({ onNavigate, role, onAgentLogin }: AgentNe
           </div>
         </div>
 
+        {/* Diagnostic Flow Diagram */}
+        <div className="mb-8 overflow-hidden rounded-2xl shadow-lg">
+          <img
+            src="/images/Agrinovva_diag.jpg"
+            alt="AgriNovva Diagnostic Flow — From crop photo to AI diagnosis to treatment recommendation"
+            className="w-full h-auto object-cover max-h-[480px]"
+          />
+        </div>
+
         {/* Agent Login / Register CTA */}
         <div className="relative overflow-hidden rounded-[2rem] border border-emerald-200 bg-gradient-to-br from-emerald-800 via-emerald-700 to-teal-800 p-6 sm:p-8 lg:p-10 shadow-xl">
           <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-white/5 blur-3xl" />
