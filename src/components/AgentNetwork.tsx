@@ -60,8 +60,8 @@ export default function AgentNetwork({ onNavigate, role, onAgentLogin }: AgentNe
               {[
                 { step: "1", title: "Visit a Hub", desc: "Walk into any AgriNovva Farmer Support Centre at Gboko, Makurdi, Otukpo, Katsina-Ala, Vandeikya, or Gwer West market." },
                 { step: "2", title: "Scan the QR Code", desc: "At the solar board, scan the QR code to download the app or connect to an agent instantly." },
-                { step: "3", title: "Call an Agent", desc: "Dial the toll-free line 0800-AGRI-NOV or tap 'Agent Login' below to reach your nearest verified agent." },
-                { step: "4", title: "Agent Comes to You", desc: "No transport? Our agents visit your farm for crop diagnosis, registration, and input verification — all free." },
+                { step: "3", title: "Call an Agent", desc: "Dial the toll-free line 0800-AGRI-NOV, use USSD code *700*333# from any phone, or tap 'Agent Login' below to reach your nearest verified agent." },
+                { step: "4", title: "Agent Comes to You", desc: "No transport? Our agents can visit your farm for a small fee covering transport and diagnosis. To save costs, bring a branch of the diseased crop to the nearest hub — our agents will scan and diagnose it on the spot for just a token." },
               ].map((item) => (
                 <div key={item.step} className="flex gap-3">
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-xs font-black text-white">{item.step}</span>
