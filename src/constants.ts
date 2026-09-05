@@ -7,28 +7,28 @@ export const BRAND = {
 };
 
 export const INITIAL_PRODUCE: ProduceItem[] = [
-  { id: "p1", title: "Premium Organic Brown Rice", farmerName: "Muthoni Farms", location: "Kirinyaga, Nigeria", category: "organic", grade: "premium", pricePerKg: 2800, availableQty: 5000, organicCert: true, image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&q=80", rating: 4.8, harvestDate: "2025-03-10", description: "Hand-harvested organic brown rice from the foothills of Mt. Nigeria. Naturally grown without pesticides." },
-  { id: "p2", title: "Fresh Vine Tomatoes", farmerName: "Green Valley Co-op", location: "Nakuru, Nigeria", category: "vegetables", grade: "premium", pricePerKg: 1500, availableQty: 2000, organicCert: false, image: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=600&q=80", rating: 4.5, harvestDate: "2025-03-14", description: "Plump, vine-ripened tomatoes harvested fresh daily. Perfect for salads and sauces." },
-  { id: "p3", title: "Sweet Nigerian Mangoes", farmerName: "Coast Tropical Fruits", location: "Mombasa, Nigeria", category: "fruits", grade: "premium", pricePerKg: 1800, availableQty: 3000, organicCert: false, image: "https://images.unsplash.com/photo-1553279768-865429fa0078?w=600&q=80", rating: 4.9, harvestDate: "2025-03-12", description: "Sun-ripened sweet mangoes from the Nigerian coast. Naturally juicy and fiber-free." },
-  { id: "p4", title: "Grade A White Maize", farmerName: "Rift Valley Grains", location: "Uasin Gishu, Nigeria", category: "grains", grade: "standard", pricePerKg: 650, availableQty: 10000, organicCert: false, image: "https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=600&q=80", rating: 4.2, harvestDate: "2025-02-28", description: "High-yield white maize from the breadbasket of Nigeria. Dried and graded for quality." },
-  { id: "p5", title: "Organic Free-Range Eggs", farmerName: "Happy Hens Farm", location: "Kiambu, Nigeria", category: "dairy-poultry", grade: "premium", pricePerKg: 3500, availableQty: 800, organicCert: true, image: "https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=600&q=80", rating: 4.7, harvestDate: "2025-03-15", description: "Farm-fresh free-range eggs from pasture-raised hens. Rich in omega-3 and flavor." },
-  { id: "p6", title: "Fresh Kale (Sukuma Wiki)", farmerName: "Highlands Greens", location: "Gboko, Benue", category: "vegetables", grade: "standard", pricePerKg: 800, availableQty: 1500, organicCert: false, image: "/images/Fresk_kale.jpg", rating: 4.3, harvestDate: "2025-03-13", description: "Crisp, dark green kale bunches from Benue highlands. Staple green for every Nigerian kitchen." },
-  { id: "p7", title: "Organic Avocados (Fuerte)", farmerName: "Muthoni Farms", location: "Muranga, Nigeria", category: "organic", grade: "premium", pricePerKg: 2200, availableQty: 2500, organicCert: true, image: "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=600&q=80", rating: 4.9, harvestDate: "2025-03-11", description: "Creamy Fuerte avocados grown organically in the central highlands. Export quality." },
+  { id: "p1", title: "Premium Organic Brown Rice", farmerName: "Fatima Farms", location: "Nasarawa, Nigeria", category: "organic", grade: "premium", pricePerKg: 2800, availableQty: 5000, organicCert: true, image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&q=80", rating: 4.8, harvestDate: "2025-03-10", description: "Hand-harvested organic brown rice from Nasarawa farmlands. Naturally grown without pesticides." },
+  { id: "p2", title: "Fresh Vine Tomatoes", farmerName: "Green Valley Co-op", location: "Keffi, Nigeria", category: "vegetables", grade: "premium", pricePerKg: 1500, availableQty: 2000, organicCert: false, image: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=600&q=80", rating: 4.5, harvestDate: "2025-03-14", description: "Plump, vine-ripened tomatoes harvested fresh daily. Perfect for jollof rice and stews." },
+  { id: "p3", title: "Sweet Nigerian Mangoes", farmerName: "Calabar Tropical Fruits", location: "Calabar, Nigeria", category: "fruits", grade: "premium", pricePerKg: 1800, availableQty: 3000, organicCert: false, image: "https://images.unsplash.com/photo-1553279768-865429fa0078?w=600&q=80", rating: 4.9, harvestDate: "2025-03-12", description: "Sun-ripened sweet mangoes from the Nigerian coast. Naturally juicy and fiber-free." },
+  { id: "p4", title: "Grade A White Maize", farmerName: "Kano Grain Merchants", location: "Kano, Nigeria", category: "grains", grade: "standard", pricePerKg: 650, availableQty: 10000, organicCert: false, image: "https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=600&q=80", rating: 4.2, harvestDate: "2025-02-28", description: "High-yield white maize from the breadbasket of Northern Nigeria. Dried and graded for quality." },
+  { id: "p5", title: "Organic Free-Range Eggs", farmerName: "Happy Hens Farm", location: "Ibadan, Nigeria", category: "dairy-poultry", grade: "premium", pricePerKg: 3500, availableQty: 800, organicCert: true, image: "https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=600&q=80", rating: 4.7, harvestDate: "2025-03-15", description: "Farm-fresh free-range eggs from pasture-raised hens. Rich in omega-3 and flavor." },
+  { id: "p6", title: "Fresh Kale (Efo Soko)", farmerName: "Highlands Greens", location: "Gboko, Benue", category: "vegetables", grade: "standard", pricePerKg: 800, availableQty: 1500, organicCert: false, image: "/images/Fresk_kale.jpg", rating: 4.3, harvestDate: "2025-03-13", description: "Crisp, dark green kale bunches from Benue highlands. Staple green for every Nigerian kitchen." },
+  { id: "p7", title: "Organic Avocados", farmerName: "Plateau Fresh Farms", location: "Jos, Nigeria", category: "organic", grade: "premium", pricePerKg: 2200, availableQty: 2500, organicCert: true, image: "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=600&q=80", rating: 4.9, harvestDate: "2025-03-11", description: "Creamy avocados grown organically on the Jos Plateau. Export quality." },
   { id: "p8", title: "Fresh Cow Milk", farmerName: "Dairy Gold Co-op", location: "Makurdi, Benue", category: "dairy-poultry", grade: "premium", pricePerKg: 900, availableQty: 3000, organicCert: false, image: "/images/fresh_cow_milk.jpg", rating: 4.4, harvestDate: "2025-03-15", description: "Fresh pasteurized whole milk from grass-fed White Fulani cows in Benue. Delivered chilled." },
   { id: "p9", title: "Sorghum Grain", farmerName: "Eastern Drylands Farm", location: "Otukpo, Benue", category: "grains", grade: "economy", pricePerKg: 500, availableQty: 6000, organicCert: false, image: "/images/Sorghum_Grain.jpg", rating: 4.0, harvestDate: "2025-02-20", description: "Drought-resistant sorghum grain from Benue drylands. Ideal for flour and animal feed." },
-  { id: "p10", title: "Passion Fruit", farmerName: "Coast Tropical Fruits", location: "Kwale, Nigeria", category: "fruits", grade: "premium", pricePerKg: 3000, availableQty: 1200, organicCert: false, image: "https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?w=600&q=80", rating: 4.6, harvestDate: "2025-03-14", description: "Sweet-tart passion fruits bursting with flavor. Perfect for juice and desserts." },
+  { id: "p10", title: "Passion Fruit", farmerName: "Calabar Tropical Fruits", location: "Warri, Nigeria", category: "fruits", grade: "premium", pricePerKg: 3000, availableQty: 1200, organicCert: false, image: "https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?w=600&q=80", rating: 4.6, harvestDate: "2025-03-14", description: "Sweet-tart passion fruits bursting with flavor. Perfect for juice and desserts." },
 ];
 
 export const INITIAL_SHIPMENTS: SupplyChainShipment[] = [
   {
-    id: "s1", produceTitle: "Premium Organic Brown Rice", origin: "Kirinyaga, Nigeria", destination: "Nairobi Wholesale Market", status: "in-transit",
-    driverName: "James Ochieng", coldStorageTemp: 4.2, routeProgress: 65, escrowAmount: 14000, escrowReleased: false,
+    id: "s1", produceTitle: "Premium Organic Brown Rice", origin: "Nasarawa, Nigeria", destination: "Lagos Wholesale Market", status: "in-transit",
+    driverName: "Chukwuemeka Obi", coldStorageTemp: 4.2, routeProgress: 65, escrowAmount: 14000, escrowReleased: false,
     steps: [
-      { label: "Harvested & Packed", completed: true, timestamp: "2025-03-10 06:00", location: "Kirinyaga Farm" },
-      { label: "Quality Inspection", completed: true, timestamp: "2025-03-10 14:00", location: "Kirinyaga Grading Center" },
-      { label: "Loaded for Transit", completed: true, timestamp: "2025-03-11 07:00", location: "Kirinyaga Depot" },
-      { label: "In Transit to Nairobi", completed: true, timestamp: "2025-03-12 10:00", location: "Thika Highway" },
-      { label: "Arrival at Nairobi Market", completed: false, timestamp: "ETA 2025-03-16", location: "Nairobi Wholesale" },
+      { label: "Harvested & Packed", completed: true, timestamp: "2025-03-10 06:00", location: "Nasarawa Farm" },
+      { label: "Quality Inspection", completed: true, timestamp: "2025-03-10 14:00", location: "Nasarawa Grading Center" },
+      { label: "Loaded for Transit", completed: true, timestamp: "2025-03-11 07:00", location: "Nasarawa Depot" },
+      { label: "In Transit to Lagos", completed: true, timestamp: "2025-03-12 10:00", location: "Abuja-Keffi Expressway" },
+      { label: "Arrival at Lagos Market", completed: false, timestamp: "ETA 2025-03-16", location: "Lagos Wholesale" },
       { label: "Escrow Release", completed: false, timestamp: "Pending", location: "Payment Gateway" },
     ],
     tempLog: [
@@ -37,27 +37,27 @@ export const INITIAL_SHIPMENTS: SupplyChainShipment[] = [
     ],
   },
   {
-    id: "s2", produceTitle: "Fresh Vine Tomatoes", origin: "Nakuru, Nigeria", destination: "Mombasa Port", status: "pending",
+    id: "s2", produceTitle: "Fresh Vine Tomatoes", origin: "Keffi, Nigeria", destination: "Apapa Port, Lagos", status: "pending",
     driverName: "Amina Hassan", coldStorageTemp: 6.0, routeProgress: 0, escrowAmount: 3000, escrowReleased: false,
     steps: [
-      { label: "Harvested & Packed", completed: false, timestamp: "Scheduled 2025-03-18", location: "Nakuru Farm" },
-      { label: "Quality Inspection", completed: false, timestamp: "Pending", location: "Nakuru Grading" },
-      { label: "Loaded for Transit", completed: false, timestamp: "Pending", location: "Nakuru Depot" },
-      { label: "In Transit to Mombasa", completed: false, timestamp: "Pending", location: "Nairobi-Mombasa Highway" },
-      { label: "Arrival at Port", completed: false, timestamp: "Pending", location: "Mombasa Port" },
+      { label: "Harvested & Packed", completed: false, timestamp: "Scheduled 2025-03-18", location: "Keffi Farm" },
+      { label: "Quality Inspection", completed: false, timestamp: "Pending", location: "Keffi Grading" },
+      { label: "Loaded for Transit", completed: false, timestamp: "Pending", location: "Keffi Depot" },
+      { label: "In Transit to Lagos", completed: false, timestamp: "Pending", location: "Abuja-Lagos Expressway" },
+      { label: "Arrival at Port", completed: false, timestamp: "Pending", location: "Apapa Port" },
       { label: "Escrow Release", completed: false, timestamp: "Pending", location: "Payment Gateway" },
     ],
     tempLog: [{ time: "Day 1", temp: 6.2 }],
   },
   {
-    id: "s3", produceTitle: "Sweet Nigerian Mangoes", origin: "Mombasa, Nigeria", destination: "Nairobi Fresh Market", status: "delivered",
-    driverName: "Peter Kamau", coldStorageTemp: 5.5, routeProgress: 100, escrowAmount: 5400, escrowReleased: true,
+    id: "s3", produceTitle: "Sweet Nigerian Mangoes", origin: "Calabar, Nigeria", destination: "Lagos Fresh Market", status: "delivered",
+    driverName: "Tunde Bakare", coldStorageTemp: 5.5, routeProgress: 100, escrowAmount: 5400, escrowReleased: true,
     steps: [
-      { label: "Harvested & Packed", completed: true, timestamp: "2025-03-10 05:00", location: "Mombasa Farm" },
-      { label: "Quality Inspection", completed: true, timestamp: "2025-03-10 13:00", location: "Mombasa Grading" },
-      { label: "Loaded for Transit", completed: true, timestamp: "2025-03-11 06:00", location: "Mombasa Depot" },
-      { label: "In Transit to Nairobi", completed: true, timestamp: "2025-03-12 08:00", location: "Mombasa Road" },
-      { label: "Arrival at Nairobi Market", completed: true, timestamp: "2025-03-14 07:00", location: "Nairobi Fresh Market" },
+      { label: "Harvested & Packed", completed: true, timestamp: "2025-03-10 05:00", location: "Calabar Farm" },
+      { label: "Quality Inspection", completed: true, timestamp: "2025-03-10 13:00", location: "Calabar Grading" },
+      { label: "Loaded for Transit", completed: true, timestamp: "2025-03-11 06:00", location: "Calabar Depot" },
+      { label: "In Transit to Lagos", completed: true, timestamp: "2025-03-12 08:00", location: "Calabar-Lagos Highway" },
+      { label: "Arrival at Lagos Market", completed: true, timestamp: "2025-03-14 07:00", location: "Lagos Fresh Market" },
       { label: "Escrow Release", completed: true, timestamp: "2025-03-14 14:00", location: "Payment Gateway" },
     ],
     tempLog: [
@@ -101,7 +101,7 @@ export const MARKET_PRICES: MarketPrice[] = [
   { commodity: "Tomatoes", price: "₦ 85", change: 1.8, unit: "/kg", trend: "up" },
   { commodity: "Mangoes", price: "₦ 110", change: 2.5, unit: "/kg", trend: "up" },
   { commodity: "Avocados", price: "₦ 130", change: -0.8, unit: "/kg", trend: "down" },
-  { commodity: "Kale (Sukuma Wiki)", price: "₦ 45", change: 0.5, unit: "/bunch", trend: "stable" },
+  { commodity: "Kale (Efo Soko)", price: "₦ 45", change: 0.5, unit: "/bunch", trend: "stable" },
   { commodity: "Free-Range Eggs", price: "₦ 520", change: 4.1, unit: "/tray", trend: "up" },
   { commodity: "Fresh Milk", price: "₦ 65", change: 1.2, unit: "/liter", trend: "up" },
   { commodity: "Sorghum", price: "₦ 38", change: -0.3, unit: "/kg", trend: "down" },
@@ -109,12 +109,12 @@ export const MARKET_PRICES: MarketPrice[] = [
 ];
 
 export const ADVISORY_TOPICS: AdvisoryTopic[] = [
-  { id: "a1", title: "Heavy Rainfall Warning — Central Region", category: "weather", summary: "Expect 40-60mm rainfall in central highlands over next 48 hours. Secure drainage and delay harvesting.", severity: "warning" },
-  { id: "a2", title: "Maize Lethal Necrosis Detected — Rift Valley", category: "disease", summary: "Reports of MLN in parts of Uasin Gishu. Isolate affected crops and apply approved fungicide.", severity: "critical" },
-  { id: "a3", title: "Optimal Tomato Planting Window", category: "agronomy", summary: "Current soil temperatures ideal for tomato transplanting in central and eastern regions.", severity: "info" },
+  { id: "a1", title: "Heavy Rainfall Warning — North-Central Region", category: "weather", summary: "Expect 40-60mm rainfall in Nasarawa and Benue over next 48 hours. Secure drainage and delay harvesting.", severity: "warning" },
+  { id: "a2", title: "Maize Lethal Necrosis Detected — Kano", category: "disease", summary: "Reports of MLN in parts of Kano State. Isolate affected crops and apply approved fungicide.", severity: "critical" },
+  { id: "a3", title: "Optimal Tomato Planting Window", category: "agronomy", summary: "Current soil temperatures ideal for tomato transplanting in North-Central and South-West regions.", severity: "info" },
   { id: "a4", title: "Fertilizer Price Drop — Apply Now", category: "market", summary: "DAP and NPK fertilizer prices dropped 12% this week. Recommended top-dressing for maize.", severity: "info" },
-  { id: "a5", title: "Drought Stress — Eastern Lowlands", category: "weather", summary: "Below-average rainfall expected in Kitui and Makueni. Switch to drought-tolerant varieties.", severity: "warning" },
-  { id: "a6", title: "Coffee Berry Disease Outbreak", category: "disease", summary: "CBD reported in Muranga. Apply copper-based fungicide and prune affected branches immediately.", severity: "critical" },
+  { id: "a5", title: "Drought Stress — North-East Lowlands", category: "weather", summary: "Below-average rainfall expected in Borno and Yobe. Switch to drought-tolerant varieties.", severity: "warning" },
+  { id: "a6", title: "Coffee Berry Disease Outbreak", category: "disease", summary: "CBD reported in Jos Plateau. Apply copper-based fungicide and prune affected branches immediately.", severity: "critical" },
 ];
 
 export const SAMPLE_DISEASES = [

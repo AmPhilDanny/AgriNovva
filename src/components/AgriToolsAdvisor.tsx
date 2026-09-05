@@ -79,7 +79,7 @@ export default function AgriToolsAdvisor() {
                   <Cloud className="h-8 w-8 text-blue-400" />
                   <div>
                     <p className="text-2xl font-bold text-stone-900">24°C</p>
-                    <p className="text-xs text-stone-500">Partly Cloudy · Nairobi Region</p>
+                    <p className="text-xs text-stone-500">Partly Cloudy · Nasarawa Region</p>
                   </div>
                 </div>
                 <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-stone-500">
