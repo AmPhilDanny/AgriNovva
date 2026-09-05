@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import {
   Download, DeviceMobile, WifiSlash, Translate, ShieldCheck,
   Leaf, Star, ArrowRight, QrCode, Play, Users, MapPin,
-  Camera, Microphone, ChartLineUp, Phone, Seeding, Truck,
+  Camera, Microphone, ChartLineUp, Phone, Plant, Truck,
 } from "@phosphor-icons/react";
 
 const HOW_IT_WORKS = [
@@ -15,7 +15,7 @@ const HOW_IT_WORKS = [
   },
   {
     step: 2,
-    icon: Seeding,
+    icon: Plant,
     title: "Register Your Farm",
     desc: "Sign up as a Farmer, Buyer, or Logistics partner. Farmers geo-tag their plot and link NIN for verification. Buyers get instant access to fresh produce.",
     color: "bg-amber-100 text-amber-700",
