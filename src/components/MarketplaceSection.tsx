@@ -1,13 +1,15 @@
 import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Plus, Minus, Star, MapPin, SealCheck, ShoppingCart, MagnifyingGlass, Sliders, ArrowRight, Check, Leaf } from "@phosphor-icons/react";
-import type { ProduceItem, CartItem } from "../types";
+import { X, Plus, Minus, Star, MapPin, SealCheck, ShoppingCart, MagnifyingGlass, Sliders, ArrowRight, Check, Leaf, Shield, Users, Lock, Warning } from "@phosphor-icons/react";
+import type { ProduceItem, CartItem, UserRole, TabId } from "../types";
 import { INITIAL_PRODUCE } from "../constants";
 
 interface MarketplaceProps {
   cart: CartItem[];
   onAddToCart: (item: CartItem) => void;
   onRemoveFromCart: (id: string) => void;
+  role?: UserRole;
+  onNavigate?: (t: TabId) => void;
 }
 
 const categories = [
@@ -22,11 +24,27 @@ const categories = [
 const grades = ["all", "premium", "standard", "economy"] as const;
 const sortOptions = ["price-low", "price-high", "rating", "newest"] as const;
 
-export default function MarketplaceSection({ cart, onAddToCart, onRemoveFromCart }: MarketplaceProps) {
+export default function MarketplaceSection({ cart, onAddToCart, onRemoveFromCart, role, onNavigate }: MarketplaceProps) {
   const [produce, setProduce] = useState<ProduceItem[]>(() => {
-    const saved = localStorage.getItem("ah_produce");
-    return saved ? JSON.parse(saved) : INITIAL_PRODUCE;
+    try {
+      const saved = localStorage.getItem("ah_produce_v2");
+      if (saved) return JSON.parse(saved);
+      const old = localStorage.getItem("ah_produce");
+      if (old) {
+        const parsed: ProduceItem[] = JSON.parse(old);
+        const hasBroken = parsed.some(p => p.image.includes("1522184216316") || p.image.includes("1624628639859") || p.image.includes("1590259223388") || p.image.includes(".jfif"));
+        if (!hasBroken) return parsed;
+        localStorage.removeItem("ah_produce");
+      }
+    } catch {}
+    return INITIAL_PRODUCE;
   });
+  const [farmerVerified, setFarmerVerified] = useState(() => {
+    try { return localStorage.getItem("ah_farmer_verified") === "true"; } catch { return false; }
+  });
+  const [showVerifyModal, setShowVerifyModal] = useState(false);
+  const [showPostModal, setShowPostModal] = useState(false);
+  const [postForm, setPostForm] = useState({ title: "", farmerName: "", location: "Gboko, Benue", category: "vegetables" as ProduceItem["category"], pricePerKg: "", availableQty: "", description: "" });
   const [activeCategory, setActiveCategory] = useState("all");
   const [activeGrade, setActiveGrade] = useState("all");
   const [organicOnly, setOrganicOnly] = useState(false);
@@ -36,8 +54,41 @@ export default function MarketplaceSection({ cart, onAddToCart, onRemoveFromCart
   const [bulkQty, setBulkQty] = useState(1);
 
   useEffect(() => {
-    localStorage.setItem("ah_produce", JSON.stringify(produce));
+    localStorage.setItem("ah_produce_v2", JSON.stringify(produce));
   }, [produce]);
+
+  useEffect(() => {
+    try { localStorage.setItem("ah_farmer_verified", String(farmerVerified)); } catch {}
+  }, [farmerVerified]);
+
+  const handleVerify = () => {
+    setFarmerVerified(true);
+    setShowVerifyModal(false);
+    setShowPostModal(true);
+  };
+
+  const handlePost = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!postForm.title.trim() || !postForm.farmerName.trim() || !postForm.pricePerKg || !postForm.availableQty) return;
+    const newItem: ProduceItem = {
+      id: `p${Date.now()}`,
+      title: postForm.title.trim(),
+      farmerName: postForm.farmerName.trim(),
+      location: postForm.location.trim() || "Benue, Nigeria",
+      category: postForm.category,
+      grade: "standard",
+      pricePerKg: Number(postForm.pricePerKg),
+      availableQty: Number(postForm.availableQty),
+      organicCert: false,
+      image: "/images/Fresk_kale.jpg",
+      rating: 4.5,
+      harvestDate: new Date().toISOString().slice(0, 10),
+      description: postForm.description.trim() || "Fresh produce from verified farmer — Benue.",
+    };
+    setProduce(prev => [newItem, ...prev]);
+    setPostForm({ title: "", farmerName: "", location: "Gboko, Benue", category: "vegetables", pricePerKg: "", availableQty: "", description: "" });
+    setShowPostModal(false);
+  };
 
   const filtered = useMemo(() => {
     let items = [...produce];
@@ -78,10 +129,27 @@ export default function MarketplaceSection({ cart, onAddToCart, onRemoveFromCart
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-2xl font-bold text-emerald-900">Marketplace</h2>
-            <p className="mt-1 text-sm text-stone-500">Browse fresh produce from verified local farms</p>
+            <p className="mt-1 text-sm text-stone-500">
+              {role === "farmer" ? "Sell your harvest — verified farmers only" : role === "buyer" ? "Browse & buy from verified farms" : "Browse produce & supply chain"}
+            </p>
           </div>
-          {/* Search */}
-          <div className="flex items-center gap-2 rounded-lg border border-stone-200 bg-white px-3 py-2 shadow-sm">
+          <div className="flex items-center gap-2">
+            {role === "farmer" && (
+              <button
+                onClick={() => (farmerVerified ? setShowPostModal(true) : setShowVerifyModal(true))}
+                className={`inline-flex items-center gap-1.5 rounded-xl border px-4 py-2.5 text-xs font-bold shadow-sm transition-all ${farmerVerified ? "border-emerald-700 bg-emerald-700 text-white hover:bg-emerald-600" : "border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100"}`}
+              >
+                {farmerVerified ? <Plus className="h-4 w-4" /> : <Lock className="h-4 w-4" />}
+                Post Produce
+              </button>
+            )}
+            {role === "buyer" && (
+              <span className="hidden items-center gap-1.5 rounded-xl border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 sm:inline-flex">
+                <ShoppingCart className="h-4 w-4" /> Buy only — posting is farmer-only
+              </span>
+            )}
+            {/* Search */}
+            <div className="flex items-center gap-2 rounded-lg border border-stone-200 bg-white px-3 py-2 shadow-sm">
             <MagnifyingGlass className="h-4 w-4 text-stone-400" />
             <input
               value={search}
@@ -90,7 +158,30 @@ export default function MarketplaceSection({ cart, onAddToCart, onRemoveFromCart
               className="flex-1 border-0 bg-transparent text-sm outline-none placeholder:text-stone-300"
             />
           </div>
+          </div>
         </div>
+
+        {role === "farmer" && !farmerVerified && (
+          <div className="mb-6 flex flex-col gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex gap-3">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-500 text-white">
+                <Warning className="h-5 w-5" weight="fill" />
+              </span>
+              <div>
+                <p className="text-sm font-bold text-amber-900">Register and verify with our agents to post and sell your produce</p>
+                <p className="mt-0.5 text-xs leading-relaxed text-amber-700">Verified farmers get a green badge, higher visibility & escrow protection. Visit any agent in Benue (Gboko, Makurdi, Otukpo…) to verify — takes 5 mins.</p>
+              </div>
+            </div>
+            <div className="flex shrink-0 gap-2">
+              <button onClick={() => onNavigate?.("agent-network")} className="rounded-xl border border-amber-200 bg-white px-3.5 py-2 text-xs font-bold text-amber-700 hover:bg-amber-100">
+                <Users className="mr-1 inline h-3.5 w-3.5" /> Find Agent
+              </button>
+              <button onClick={() => setShowVerifyModal(true)} className="rounded-xl bg-amber-600 px-4 py-2 text-xs font-bold text-white hover:bg-amber-500">
+                Verify Now
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Filters */}
         <div className="mb-6 flex flex-wrap items-center gap-3">
@@ -298,6 +389,110 @@ export default function MarketplaceSection({ cart, onAddToCart, onRemoveFromCart
                   </button>
                 </div>
               </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Verify Flex Modal — farmers must verify to sell */}
+      <AnimatePresence>
+        {showVerifyModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 p-4"
+            onClick={() => setShowVerifyModal(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl"
+            >
+              <div className="flex flex-col gap-4 p-6 sm:flex-row">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-amber-500 text-white">
+                  <Shield className="h-6 w-6" weight="fill" />
+                </span>
+                <div className="flex-1">
+                  <h3 className="text-base font-bold text-stone-900">Register and verify with our agents to post and sell your produce</h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-stone-600">
+                    Buyers can browse and buy instantly. Farmers must be <span className="font-semibold text-emerald-700">verified by an AgriNovva agent</span> before listing. Visit any agent in Benue (Gboko, Makurdi, Otukpo) — they’ll check your farm, NIN &amp; inputs, then unlock posting + escrow.
+                  </p>
+                  <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2.5 text-xs leading-relaxed text-amber-800">
+                    <span className="font-bold">Unverified farmers</span> can browse, add to cart (as buyer), and use AI Agronomy — but <span className="font-bold">Post Produce</span> stays locked until verified.
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2 border-t border-stone-100 bg-stone-50 p-4 sm:flex-row sm:justify-end">
+                <button onClick={() => setShowVerifyModal(false)} className="rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-sm font-medium text-stone-600 hover:bg-stone-100">
+                  Cancel
+                </button>
+                <button onClick={() => { setShowVerifyModal(false); onNavigate?.("agent-network"); }} className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-emerald-200 bg-white px-4 py-2.5 text-sm font-semibold text-emerald-700 hover:bg-emerald-50">
+                  <Users className="h-4 w-4" /> Find Agent
+                </button>
+                <button onClick={handleVerify} className="rounded-xl bg-emerald-700 px-5 py-2.5 text-sm font-bold text-white hover:bg-emerald-600">
+                  Verify Now (Demo)
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Post Produce Modal — farmer-only, verified only */}
+      <AnimatePresence>
+        {showPostModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 p-4"
+            onClick={() => setShowPostModal(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 12, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 12, scale: 0.98 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-lg rounded-2xl bg-white shadow-2xl"
+            >
+              <form onSubmit={handlePost} className="p-6">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <h3 className="text-base font-bold text-stone-900">Post Produce — Verified Farmers Only</h3>
+                    <p className="mt-1 text-xs text-stone-500">Your listing will appear in Marketplace after posting. Buyer can’t post — they can only buy.</p>
+                  </div>
+                  <button type="button" onClick={() => setShowPostModal(false)} className="rounded-lg p-1.5 text-stone-400 hover:bg-stone-100">
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
+                <div className="mt-4 grid gap-3">
+                  <input value={postForm.title} onChange={e => setPostForm({ ...postForm, title: e.target.value })} placeholder="Produce title e.g. Fresh Tomatoes" className="rounded-lg border border-stone-200 px-3 py-2.5 text-sm outline-none focus:border-emerald-500" required />
+                  <div className="grid grid-cols-2 gap-3">
+                    <input value={postForm.farmerName} onChange={e => setPostForm({ ...postForm, farmerName: e.target.value })} placeholder="Farmer / Farm name" className="rounded-lg border border-stone-200 px-3 py-2.5 text-sm outline-none focus:border-emerald-500" required />
+                    <input value={postForm.location} onChange={e => setPostForm({ ...postForm, location: e.target.value })} placeholder="Location e.g. Gboko, Benue" className="rounded-lg border border-stone-200 px-3 py-2.5 text-sm outline-none focus:border-emerald-500" />
+                  </div>
+                  <div className="grid grid-cols-3 gap-3">
+                    <select value={postForm.category} onChange={e => setPostForm({ ...postForm, category: e.target.value as any })} className="rounded-lg border border-stone-200 bg-white px-3 py-2.5 text-sm outline-none">
+                      <option value="vegetables">Vegetables</option>
+                      <option value="grains">Grains</option>
+                      <option value="fruits">Fruits</option>
+                      <option value="organic">Organic</option>
+                      <option value="dairy-poultry">Dairy & Poultry</option>
+                    </select>
+                    <input type="number" value={postForm.pricePerKg} onChange={e => setPostForm({ ...postForm, pricePerKg: e.target.value })} placeholder="Price/kg ₦" className="rounded-lg border border-stone-200 px-3 py-2.5 text-sm outline-none" required />
+                    <input type="number" value={postForm.availableQty} onChange={e => setPostForm({ ...postForm, availableQty: e.target.value })} placeholder="Qty kg" className="rounded-lg border border-stone-200 px-3 py-2.5 text-sm outline-none" required />
+                  </div>
+                  <textarea value={postForm.description} onChange={e => setPostForm({ ...postForm, description: e.target.value })} placeholder="Description — harvest date, grade, notes" rows={2} className="rounded-lg border border-stone-200 px-3 py-2.5 text-sm outline-none" />
+                </div>
+                {!farmerVerified && <p className="mt-3 flex items-center gap-1.5 text-xs font-medium text-amber-700"><Lock className="h-3.5 w-3.5" /> You must verify first — this form is for verified farmers only.</p>}
+                <div className="mt-4 flex gap-2">
+                  <button type="button" onClick={() => setShowPostModal(false)} className="flex-1 rounded-xl border border-stone-200 bg-white py-2.5 text-sm font-medium text-stone-600">Cancel</button>
+                  <button type="submit" disabled={!farmerVerified} className="flex-1 rounded-xl bg-emerald-700 py-2.5 text-sm font-bold text-white hover:bg-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed">Post to Marketplace</button>
+                </div>
+              </form>
             </motion.div>
           </motion.div>
         )}

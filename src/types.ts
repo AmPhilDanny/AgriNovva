@@ -81,4 +81,4 @@ export interface EscrowOrder {
   farmerName: string;
 }
 
-export type TabId = "marketplace" | "supply-chain" | "agri-advisor" | "investment-exchange" | "agent-network" | "insurance" | "government" | "input-verification" | "price-contracts" | "dashboard";
+export type TabId = "marketplace" | "supply-chain" | "agri-advisor" | "investment-exchange" | "agent-network" | "insurance" | "government" | "input-verification" | "price-contracts" | "dashboard" | "download-app";

@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Toaster, toast } from "sonner";
-import { Grains, Truck, Users, X, ShoppingCart, Trash, Leaf, ArrowRight, PiggyBank, Shield, Building2, Factory, BadgeCheck, FileText, Calculator, HandHeart, MapPin } from "@phosphor-icons/react";
-import type { UserRole, CartItem, EscrowOrder, TabId } from "./types";
+import { Grains, Truck, Users, X, ShoppingCart, Trash, Leaf, ArrowRight, PiggyBank, Shield, Buildings, Factory, SealCheck, FileText, Calculator, HandHeart, MapPin, Download } from "@phosphor-icons/react";
+import type { UserRole, CartItem, EscrowOrder, TabId, SupplyChainShipment } from "./types";
+import { INITIAL_SHIPMENTS } from "./constants";
 import Navbar from "./components/Navbar";
 import HeroBanner from "./components/HeroBanner";
 import MarketplaceSection from "./components/MarketplaceSection";
@@ -12,20 +13,22 @@ import InvestmentExchange from "./components/InvestmentExchange";
 import AgentNetwork from "./components/AgentNetwork";
 import InsuranceProducts from "./components/InsuranceProducts";
 import GovernmentDashboard from "./components/GovernmentDashboard";
+import DownloadApp from "./components/DownloadApp";
 import InputVerification from "./components/InputVerification";
 import PriceContracts from "./components/PriceContracts";
 
 const TABS: { id: TabId; label: string; icon: typeof Leaf; roles: UserRole[] }[] = [
-  { id: "marketplace", label: "Marketplace", icon: ShoppingCart, roles: ["farmer", "buyer"] },
-  { id: "supply-chain", label: "Supply Chain", icon: Truck, roles: ["buyer", "logistics", "farmer"] },
-  { id: "agri-advisor", label: "AI Agronomy", icon: Leaf, roles: ["farmer", "buyer", "logistics"] },
-  { id: "investment-exchange", label: "Investment Exchange", icon: PiggyBank, roles: ["buyer", "farmer"] },
+  { id: "marketplace", label: "Marketplace", icon: ShoppingCart, roles: ["farmer", "buyer", "logistics"] },
+  { id: "supply-chain", label: "Supply Chain", icon: Truck, roles: ["logistics"] },
+  { id: "agri-advisor", label: "AI Agronomy", icon: Leaf, roles: ["farmer"] },
+  { id: "investment-exchange", label: "Investment Exchange", icon: PiggyBank, roles: ["farmer", "buyer"] },
   { id: "agent-network", label: "Agent Network", icon: Users, roles: ["farmer", "buyer", "logistics"] },
   { id: "insurance", label: "Insurance", icon: Shield, roles: ["farmer", "buyer"] },
-  { id: "government", label: "Government", icon: Building2, roles: ["logistics"] },
+  { id: "government", label: "Government", icon: Buildings, roles: ["logistics"] },
   { id: "input-verification", label: "Input Verification", icon: Factory, roles: ["farmer", "buyer", "logistics"] },
   { id: "price-contracts", label: "Price Contracts", icon: Calculator, roles: ["farmer", "buyer"] },
   { id: "dashboard", label: "Dashboard", icon: Grains, roles: ["farmer", "buyer", "logistics"] },
+  { id: "download-app", label: "Download App", icon: Download, roles: ["farmer", "buyer", "logistics"] },
 ];
 
 const ROLE_DASHBOARD: Record<UserRole, { title: string; stats: { label: string; value: string; icon: typeof Leaf }[] }> = {
@@ -58,6 +61,35 @@ const ROLE_DASHBOARD: Record<UserRole, { title: string; stats: { label: string; 
   },
 };
 
+const ROLE_SERVICES: Record<UserRole, { id: TabId; label: string; desc: string; icon: typeof Leaf }[]> = {
+  farmer: [
+    { id: "marketplace", label: "Sell Harvest", desc: "List & sell produce", icon: ShoppingCart },
+    { id: "agri-advisor", label: "Diagnose Crops", desc: "AI + photo", icon: Leaf },
+    { id: "investment-exchange", label: "Get Funded", desc: "Investors fund you", icon: PiggyBank },
+    { id: "input-verification", label: "Verify Inputs", desc: "Seed QR check", icon: Factory },
+    { id: "price-contracts", label: "Lock Price", desc: "Floor price escrow", icon: Calculator },
+    { id: "insurance", label: "Insure Crops", desc: "Weather-index", icon: Shield },
+    { id: "supply-chain", label: "Track Harvest", desc: "Grading + delivery", icon: Truck },
+    { id: "agent-network", label: "My Agent", desc: "Extension support", icon: Users },
+  ],
+  buyer: [
+    { id: "marketplace", label: "Buy Produce", desc: "Verified listings", icon: ShoppingCart },
+    { id: "investment-exchange", label: "Fund Farms", desc: "35% share", icon: PiggyBank },
+    { id: "price-contracts", label: "Forward Buy", desc: "Lock supply", icon: Calculator },
+    { id: "supply-chain", label: "Track Orders", desc: "Use code", icon: Truck },
+    { id: "input-verification", label: "Verify Quality", desc: "QR + lab", icon: Factory },
+    { id: "insurance", label: "Protect Investment", desc: "Yield cover", icon: Shield },
+    { id: "agent-network", label: "Agent Network", desc: "Verified agents", icon: Users },
+  ],
+  logistics: [
+    { id: "supply-chain", label: "Manage Routes", desc: "Fleet & pickups", icon: Truck },
+    { id: "government", label: "LGA Reports", desc: "Gov compliance", icon: Buildings },
+    { id: "agent-network", label: "Manage Agents", desc: "Audits + tiers", icon: Users },
+    { id: "input-verification", label: "Verify Transit", desc: "Inputs in transit", icon: Factory },
+    { id: "marketplace", label: "View Orders", desc: "All listings", icon: ShoppingCart },
+  ],
+};
+
 export default function App() {
   const [role, setRole] = useState<UserRole>("buyer");
   const [activeTab, setActiveTab] = useState<TabId>("marketplace");
@@ -70,6 +102,9 @@ export default function App() {
     return saved ? JSON.parse(saved) : [];
   });
   const [cartOpen, setCartOpen] = useState(false);
+  const [showLogisticsModal, setShowLogisticsModal] = useState(false);
+  const [logisticsCode, setLogisticsCode] = useState("");
+  const [logisticsResult, setLogisticsResult] = useState<SupplyChainShipment | null>(null);
 
   useEffect(() => {
     localStorage.setItem("ah_cart", JSON.stringify(cart));
@@ -130,7 +165,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-stone-50 text-stone-900">
       <Toaster position="top-right" richColors />
-      <Navbar role={role} onRoleChange={setRole} cartCount={cart.length} onCartOpen={() => setCartOpen(true)} />
+      <Navbar role={role} onRoleChange={setRole} cartCount={cart.length} onCartOpen={() => setCartOpen(true)} activeTab={activeTab} onNavigate={setActiveTab} />
 
       <HeroBanner role={role} />
 
@@ -166,16 +201,17 @@ export default function App() {
           transition={{ duration: 0.2 }}
         >
           {activeTab === "marketplace" && (
-            <MarketplaceSection cart={cart} onAddToCart={handleAddToCart} onRemoveFromCart={handleRemoveFromCart} />
+            <MarketplaceSection cart={cart} onAddToCart={handleAddToCart} onRemoveFromCart={handleRemoveFromCart} role={role} onNavigate={setActiveTab} />
           )}
           {activeTab === "supply-chain" && <SupplyChainTracker />}
           {activeTab === "agri-advisor" && <AgriToolsAdvisor />}
           {activeTab === "investment-exchange" && <InvestmentExchange />}
-          {activeTab === "agent-network" && <AgentNetwork />}
+          {activeTab === "agent-network" && <AgentNetwork onNavigate={setActiveTab} role={role} />}
           {activeTab === "insurance" && <InsuranceProducts />}
-          {activeTab === "government" && <GovernmentDashboard />}
+          {activeTab === "government" && <GovernmentDashboard onNavigate={setActiveTab} />}
           {activeTab === "input-verification" && <InputVerification />}
           {activeTab === "price-contracts" && <PriceContracts />}
+          {activeTab === "download-app" && <DownloadApp />}
           {activeTab === "dashboard" && (
             <section className="py-8 sm:py-12">
               <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -195,6 +231,143 @@ export default function App() {
                     );
                   })}
                 </div>
+
+                {/* Organized Services Hub — wired per role */}
+                <div className="mt-8 rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 shadow-sm">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <h3 className="text-sm font-bold text-emerald-900">Your Services — {role === "farmer" ? "Farmer Hub" : role === "buyer" ? "Buyer Hub" : "Logistics Hub"}</h3>
+                    <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-emerald-700 border border-emerald-200">One tap → opens service</span>
+                  </div>
+                  <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                    {ROLE_SERVICES[role].map((s) => {
+                      const Icon = s.icon;
+                      return (
+                        <button
+                          key={s.id}
+                          onClick={() => {
+                            if (s.id === "supply-chain" && role !== "logistics") {
+                              setShowLogisticsModal(true);
+                            } else {
+                              setActiveTab(s.id);
+                            }
+                          }}
+                          className="group flex items-center gap-3 rounded-xl border border-white bg-white p-3 text-left shadow-sm transition-all hover:shadow-md hover:border-emerald-200"
+                        >
+                          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-600 text-white shrink-0">
+                            <Icon className="h-5 w-5" weight="fill" />
+                          </span>
+                          <span className="min-w-0">
+                            <span className="block text-xs font-bold text-stone-900 group-hover:text-emerald-700">{s.label}</span>
+                            <span className="block text-[11px] text-stone-500">{s.desc}</span>
+                          </span>
+                          <span className="ml-auto text-emerald-600">→</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <p className="mt-3 text-[11px] text-emerald-700/80">
+                    {role === "farmer" && "Sell → diagnose → verify inputs → lock price → insure → track via agent."}
+                    {role === "buyer" && "Buy → fund farms → forward price → track escrow → verify quality via agent."}
+                    {role === "logistics" && "Routes → verify transit → manage agents → government reports → escrow oversight."}
+                  </p>
+                </div>
+
+                {role === "logistics" && (
+                  <div className="mt-8 rounded-xl border border-stone-200 bg-white p-5 shadow-sm">
+                    <h3 className="text-sm font-semibold text-stone-900 flex items-center gap-2"><SealCheck className="h-4 w-4 text-emerald-600" /> Farmer & Buyer Verification Queue</h3>
+                    <p className="mt-1 text-xs text-stone-500">Check and verify if user is a farmer or buyer — approve posting/trading rights before escrow.</p>
+                    <div className="mt-4 space-y-3">
+                      {[
+                        { name: "Amina Bello", role: "farmer" as const, location: "Gboko, Benue", docs: "NIN, farm geo-tag, agent Adaeze — pending field check" },
+                        { name: "Chidi Ochoga", role: "farmer" as const, location: "Otukpo, Benue", docs: "NIN, 5ha maize, input QR verified" },
+                        { name: "Ibrahim Musa", role: "buyer" as const, location: "Makurdi, Benue", docs: "CAC, escrow KYC, limit ₦5M" },
+                        { name: "Fatima Ibrahim", role: "buyer" as const, location: "Lagos Hub", docs: "BVN verified — already verified" },
+                      ].map((u) => (
+                        <div key={u.name} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-stone-100 bg-stone-50 p-3">
+                          <div className="flex gap-3">
+                            <span className={`flex h-9 w-9 items-center justify-center rounded-lg ${u.role === "farmer" ? "bg-emerald-100 text-emerald-700" : "bg-blue-100 text-blue-700"}`}>
+                              <Users className="h-5 w-5" />
+                            </span>
+                            <div>
+                              <p className="text-sm font-semibold text-stone-900">{u.name} <span className={`ml-1 rounded-full px-1.5 py-0.5 text-[10px] font-bold ${u.role === "farmer" ? "bg-emerald-100 text-emerald-700" : "bg-blue-100 text-blue-700"}`}>{u.role}</span></p>
+                              <p className="text-xs text-stone-500">{u.location} · {u.docs}</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className={`rounded-full border px-2.5 py-1 text-xs font-bold ${u.name === "Fatima Ibrahim" ? "bg-emerald-100 text-emerald-700 border-emerald-200" : "bg-amber-100 text-amber-700 border-amber-200"}`}>{u.name === "Fatima Ibrahim" ? "verified" : "pending"}</span>
+                            {u.name !== "Fatima Ibrahim" ? (
+                              <button onClick={() => toast.success(`${u.name} verified as ${u.role} — now can ${u.role === "farmer" ? "post produce" : "place orders"}`)} className="rounded-xl bg-emerald-700 px-3 py-1.5 text-xs font-bold text-white hover:bg-emerald-600">Verify</button>
+                            ) : (
+                              <span className="rounded-xl border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-500">Verified</span>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <p className="mt-3 text-[11px] text-stone-500">Farmers need agent + NIN to post (Marketplace → Post Produce). Buyers need KYC to fund (Investment Exchange). Logistics confirms both before escrow.</p>
+                  </div>
+                )}
+
+                {(role === "farmer" || role === "buyer") && (
+                  <div className="mt-8 rounded-xl border border-emerald-200 bg-white p-5 shadow-sm">
+                    <h3 className="text-sm font-semibold text-stone-900 flex items-center gap-2"><Truck className="h-4 w-4 text-emerald-600" /> Track Your Supply — Secure</h3>
+                    <p className="mt-1 text-xs text-stone-500">Choose your role and enter your tracking code — you will only see your own shipment. Everyone cannot see what is being transported.</p>
+                    <div className="mt-2 flex flex-wrap gap-2 text-[11px]">
+                      <span className="rounded-full bg-emerald-50 px-2.5 py-1 font-mono font-bold text-emerald-700 border border-emerald-200">Farmer demo: BN-FARM-2025-001</span>
+                      <span className="rounded-full bg-blue-50 px-2.5 py-1 font-mono font-bold text-blue-700 border border-blue-200">Buyer demo: BN-BUYER-2025-002</span>
+                    </div>
+                    <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+                      <select value={role} onChange={(e) => setRole(e.target.value as UserRole)} className="rounded-lg border border-stone-200 bg-white px-3 py-2.5 text-sm font-medium">
+                        <option value="farmer">I am Farmer</option>
+                        <option value="buyer">I am Buyer</option>
+                      </select>
+                      <input value={logisticsCode} onChange={(e) => setLogisticsCode(e.target.value.toUpperCase())} placeholder="Enter code e.g. BN-FARM-2025-001" className="flex-1 rounded-lg border border-stone-200 bg-white px-3 py-2.5 text-sm font-mono outline-none focus:border-emerald-500" />
+                      <button
+                        onClick={() => {
+                          const code = logisticsCode.trim().toUpperCase();
+                          if (!code) { toast.error("Enter your tracking code"); return; }
+                          const isFarmerCode = code.includes("FARM");
+                          const isBuyerCode = code.includes("BUYER");
+                          if ((role === "farmer" && isBuyerCode) || (role === "buyer" && isFarmerCode)) {
+                            toast.error(`This code is for ${isFarmerCode ? "farmer" : "buyer"} — switch role to view`);
+                            setLogisticsResult(null);
+                            return;
+                          }
+                          const all: SupplyChainShipment[] = (() => { try { const s = localStorage.getItem("ah_shipments"); return s ? JSON.parse(s) : INITIAL_SHIPMENTS; } catch { return INITIAL_SHIPMENTS; } })();
+                          const found = all.find(s => s.id.toUpperCase() === code);
+                          if (found) {
+                            const owns = (role === "farmer" && found.id.includes("FARM")) || (role === "buyer" && found.id.includes("BUYER")) || found.id.startsWith("s");
+                            if (!owns && (found.id.includes("FARM") || found.id.includes("BUYER"))) {
+                              toast.error("You can only see your own supply — this shipment belongs to another role");
+                              setLogisticsResult(null);
+                              return;
+                            }
+                            setLogisticsResult(found);
+                            toast.success(`Found ${found.produceTitle} — ${found.status}`);
+                          } else {
+                            setLogisticsResult(null);
+                            toast.error("Code not found — use demo codes above");
+                          }
+                        }}
+                        className="rounded-xl bg-emerald-700 px-5 py-2.5 text-sm font-bold text-white hover:bg-emerald-600"
+                      >
+                        Track
+                      </button>
+                    </div>
+                    {logisticsResult && (
+                      <div className="mt-3 rounded-xl border border-emerald-200 bg-emerald-50 p-3">
+                        <p className="text-xs font-bold text-stone-900">{logisticsResult.produceTitle} — {logisticsResult.id}</p>
+                        <p className="text-[11px] text-stone-600">{logisticsResult.origin} → {logisticsResult.destination} · Driver {logisticsResult.driverName}</p>
+                        <div className="mt-2 h-2 overflow-hidden rounded-full bg-white">
+                          <div className="h-full bg-emerald-500" style={{ width: `${logisticsResult.routeProgress}%` }} />
+                        </div>
+                        <p className="mt-1 text-[11px] text-stone-600">{logisticsResult.routeProgress}% · {logisticsResult.status} · Escrow ₦{logisticsResult.escrowAmount.toLocaleString()} {logisticsResult.escrowReleased ? "(released)" : "(in escrow)"}</p>
+                      </div>
+                    )}
+                    <p className="mt-2 text-[11px] text-stone-500">Security: farmer codes start with <span className="font-mono font-bold">BN-FARM</span>, buyer codes with <span className="font-mono font-bold">BN-BUYER</span> — only your code shows your chain.</p>
+                  </div>
+                )}
+
                 {/* Quick Actions */}
                 <div className="mt-8 rounded-xl border border-stone-200 bg-white p-5 shadow-sm">
                   <h3 className="text-sm font-semibold text-stone-900">Quick Actions</h3>
@@ -309,6 +482,157 @@ export default function App() {
                   </button>
                 </div>
               )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Logistics Market — farmer/buyer order & track (Supply Chain tab is logistics-only) */}
+      <AnimatePresence>
+        {showLogisticsModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 p-4"
+            onClick={() => setShowLogisticsModal(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 12, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 12, scale: 0.98 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-lg rounded-2xl bg-white shadow-2xl"
+            >
+              <div className="p-6">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex gap-3">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-600 text-white">
+                      <Truck className="h-5 w-5" weight="fill" />
+                    </span>
+                    <div>
+                      <h3 className="text-base font-bold text-stone-900">Logistics Market</h3>
+                      <p className="mt-1 text-xs leading-relaxed text-stone-500">
+                        {role === "farmer" ? "Order pickup for your harvest — we assign a driver & escrow." : "Order delivery for your purchase — track with code."}
+                      </p>
+                    </div>
+                  </div>
+                  <button onClick={() => setShowLogisticsModal(false)} className="rounded-lg p-1.5 text-stone-400 hover:bg-stone-100">
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
+
+                <div className="mt-5 rounded-xl border border-stone-200 bg-stone-50 p-4">
+                  <p className="text-xs font-bold text-stone-700">Track Supply — secure (choose role + code)</p>
+                  <p className="mt-1 text-[11px] text-stone-500">You will only see your own shipment — everyone cannot see what is being transported.</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    <button onClick={() => { setRole("farmer"); setLogisticsCode("BN-FARM-2025-001"); }} className="rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1.5 text-[11px] font-bold text-emerald-700">Use Farmer Demo</button>
+                    <button onClick={() => { setRole("buyer"); setLogisticsCode("BN-BUYER-2025-002"); }} className="rounded-lg border border-blue-200 bg-blue-50 px-2.5 py-1.5 text-[11px] font-bold text-blue-700">Use Buyer Demo</button>
+                  </div>
+                  <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+                    <select value={role} onChange={(e) => setRole(e.target.value as UserRole)} className="rounded-lg border border-stone-200 bg-white px-3 py-2.5 text-sm font-medium">
+                      <option value="farmer">I am Farmer</option>
+                      <option value="buyer">I am Buyer</option>
+                      <option value="logistics">I am Logistics</option>
+                    </select>
+                    <input value={logisticsCode} onChange={(e) => setLogisticsCode(e.target.value.toUpperCase())} placeholder="e.g. BN-FARM-2025-001" className="flex-1 rounded-lg border border-stone-200 bg-white px-3 py-2.5 text-sm font-mono outline-none focus:border-emerald-500" />
+                    <button
+                      onClick={() => {
+                        const code = logisticsCode.trim().toUpperCase();
+                        if (!code) { toast.error("Enter your tracking code"); return; }
+                        const isFarmerCode = code.includes("FARM");
+                        const isBuyerCode = code.includes("BUYER");
+                        if ((role === "farmer" && isBuyerCode) || (role === "buyer" && isFarmerCode)) {
+                          toast.error(`This code is for ${isFarmerCode ? "farmer" : "buyer"} — switch role to view`);
+                          setLogisticsResult(null);
+                          return;
+                        }
+                        const all: SupplyChainShipment[] = (() => {
+                          try { const s = localStorage.getItem("ah_shipments"); return s ? JSON.parse(s) : INITIAL_SHIPMENTS; } catch { return INITIAL_SHIPMENTS; }
+                        })();
+                        const found = all.find(s => s.id.toUpperCase() === code);
+                        if (found) {
+                          const owns = (role === "farmer" && found.id.includes("FARM")) || (role === "buyer" && found.id.includes("BUYER")) || role === "logistics" || found.id.startsWith("s");
+                          if (!owns && (found.id.includes("FARM") || found.id.includes("BUYER"))) {
+                            toast.error("You can only see your own supply — this shipment belongs to another role");
+                            setLogisticsResult(null);
+                            return;
+                          }
+                          setLogisticsResult(found); toast.success(`Found ${found.produceTitle} — ${found.status}`);
+                        } else { setLogisticsResult(null); toast.error("Code not found — use demo codes above"); }
+                      }}
+                      className="rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-bold text-white hover:bg-emerald-600"
+                    >
+                      Track
+                    </button>
+                  </div>
+                  {logisticsResult && (
+                    <div className="mt-3 rounded-xl border border-emerald-200 bg-white p-3">
+                      <p className="text-xs font-bold text-stone-900">{logisticsResult.produceTitle}</p>
+                      <p className="text-[11px] text-stone-500">{logisticsResult.origin} → {logisticsResult.destination} · Driver {logisticsResult.driverName}</p>
+                      <div className="mt-2 h-2 overflow-hidden rounded-full bg-stone-100">
+                        <div className="h-full bg-emerald-500" style={{ width: `${logisticsResult.routeProgress}%` }} />
+                      </div>
+                      <p className="mt-1 text-[11px] text-stone-500">{logisticsResult.routeProgress}% · {logisticsResult.status} · Escrow ₦{logisticsResult.escrowAmount.toLocaleString()} {logisticsResult.escrowReleased ? "(released)" : "(in escrow)"}</p>
+                      <button onClick={() => { setShowLogisticsModal(false); if (role === "logistics") setActiveTab("supply-chain"); }} className="mt-2 text-xs font-semibold text-emerald-700 underline">
+                        {role === "logistics" ? "Open full Supply Chain Tracker →" : "Logistics will update you via SMS — save this code"}
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                <div className="mt-4 rounded-xl border border-stone-200 bg-white p-4">
+                  <p className="text-xs font-bold text-stone-700">Order Logistics — {role === "farmer" ? "pickup from farm" : "delivery to you"}</p>
+                  <div className="mt-2 grid gap-2">
+                    <input id="logi-produce" placeholder={role === "farmer" ? "Produce e.g. Fresh Kale, 50kg" : "Order e.g. Brown Rice, 100kg"} className="rounded-lg border border-stone-200 px-3 py-2 text-sm outline-none focus:border-emerald-500" />
+                    <div className="grid grid-cols-2 gap-2">
+                      <input id="logi-from" placeholder="From (e.g. Gboko)" className="rounded-lg border border-stone-200 px-3 py-2 text-sm outline-none" />
+                      <input id="logi-to" placeholder="To (e.g. Makurdi)" className="rounded-lg border border-stone-200 px-3 py-2 text-sm outline-none" />
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      const prod = (document.getElementById("logi-produce") as HTMLInputElement)?.value?.trim();
+                      const from = (document.getElementById("logi-from") as HTMLInputElement)?.value?.trim() || (role === "farmer" ? "My Farm" : "Seller Hub");
+                      const to = (document.getElementById("logi-to") as HTMLInputElement)?.value?.trim() || (role === "farmer" ? "Makurdi Hub" : "My Address");
+                      if (!prod) { toast.error("Enter produce / order"); return; }
+                      const code = `BN-${role === "farmer" ? "FARM" : "BUYER"}-${Date.now().toString().slice(-4)}`;
+                      const newShip: SupplyChainShipment = {
+                        id: code,
+                        produceTitle: prod,
+                        origin: from,
+                        destination: to,
+                        status: "pending",
+                        driverName: "To be assigned",
+                        coldStorageTemp: 5.0,
+                        routeProgress: 0,
+                        escrowAmount: Math.floor(Math.random() * 20000) + 5000,
+                        escrowReleased: false,
+                        steps: [
+                          { label: "Logistics Ordered", completed: true, timestamp: new Date().toLocaleString(), location: from },
+                          { label: "Agent Verified", completed: false, timestamp: "Pending", location: from },
+                          { label: "Pickup Scheduled", completed: false, timestamp: "Pending", location: from },
+                          { label: "In Transit", completed: false, timestamp: "Pending", location: `${from} → ${to}` },
+                          { label: "Arrival & Delivery", completed: false, timestamp: "Pending", location: to },
+                          { label: "Escrow Release", completed: false, timestamp: "Pending", location: "Payment Gateway" },
+                        ],
+                        tempLog: [{ time: "Day 1", temp: 5.0 }],
+                      };
+                      try {
+                        const all: SupplyChainShipment[] = (() => { try { const s = localStorage.getItem("ah_shipments"); return s ? JSON.parse(s) : INITIAL_SHIPMENTS; } catch { return INITIAL_SHIPMENTS; } })();
+                        localStorage.setItem("ah_shipments", JSON.stringify([newShip, ...all]));
+                      } catch {}
+                      setLogisticsCode(code);
+                      setLogisticsResult(newShip);
+                      toast.success(`Logistics ordered! Code: ${code} — share with driver/buyer`);
+                    }}
+                    className="mt-3 w-full rounded-xl bg-amber-600 py-2.5 text-sm font-bold text-white hover:bg-amber-500"
+                  >
+                    Order Logistics — Get Tracking Code
+                  </button>
+                  <p className="mt-1.5 text-center text-[11px] text-stone-500">Full tracking lives in <span className="font-semibold">Supply Chain</span> (logistics-only) — farmer/buyer track here with code.</p>
+                </div>
+              </div>
             </motion.div>
           </motion.div>
         )}

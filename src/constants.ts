@@ -12,10 +12,10 @@ export const INITIAL_PRODUCE: ProduceItem[] = [
   { id: "p3", title: "Sweet Nigerian Mangoes", farmerName: "Coast Tropical Fruits", location: "Mombasa, Nigeria", category: "fruits", grade: "premium", pricePerKg: 1800, availableQty: 3000, organicCert: false, image: "https://images.unsplash.com/photo-1553279768-865429fa0078?w=600&q=80", rating: 4.9, harvestDate: "2025-03-12", description: "Sun-ripened sweet mangoes from the Nigerian coast. Naturally juicy and fiber-free." },
   { id: "p4", title: "Grade A White Maize", farmerName: "Rift Valley Grains", location: "Uasin Gishu, Nigeria", category: "grains", grade: "standard", pricePerKg: 650, availableQty: 10000, organicCert: false, image: "https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=600&q=80", rating: 4.2, harvestDate: "2025-02-28", description: "High-yield white maize from the breadbasket of Nigeria. Dried and graded for quality." },
   { id: "p5", title: "Organic Free-Range Eggs", farmerName: "Happy Hens Farm", location: "Kiambu, Nigeria", category: "dairy-poultry", grade: "premium", pricePerKg: 3500, availableQty: 800, organicCert: true, image: "https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=600&q=80", rating: 4.7, harvestDate: "2025-03-15", description: "Farm-fresh free-range eggs from pasture-raised hens. Rich in omega-3 and flavor." },
-  { id: "p6", title: "Fresh Kale (Sukuma Wiki)", farmerName: "Highlands Greens", location: "Nyeri, Nigeria", category: "vegetables", grade: "standard", pricePerKg: 800, availableQty: 1500, organicCert: false, image: "https://images.unsplash.com/photo-1522184216316-3c25379f9720?w=600&q=80", rating: 4.3, harvestDate: "2025-03-13", description: "Crisp, dark green kale bunches harvested daily. Staple green for every Nigerian kitchen." },
+  { id: "p6", title: "Fresh Kale (Sukuma Wiki)", farmerName: "Highlands Greens", location: "Gboko, Benue", category: "vegetables", grade: "standard", pricePerKg: 800, availableQty: 1500, organicCert: false, image: "/images/Fresk_kale.jpg", rating: 4.3, harvestDate: "2025-03-13", description: "Crisp, dark green kale bunches from Benue highlands. Staple green for every Nigerian kitchen." },
   { id: "p7", title: "Organic Avocados (Fuerte)", farmerName: "Muthoni Farms", location: "Muranga, Nigeria", category: "organic", grade: "premium", pricePerKg: 2200, availableQty: 2500, organicCert: true, image: "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=600&q=80", rating: 4.9, harvestDate: "2025-03-11", description: "Creamy Fuerte avocados grown organically in the central highlands. Export quality." },
-  { id: "p8", title: "Fresh Cow Milk", farmerName: "Dairy Gold Co-op", location: "Nandi, Nigeria", category: "dairy-poultry", grade: "premium", pricePerKg: 900, availableQty: 3000, organicCert: false, image: "https://images.unsplash.com/photo-1624628639859-c31b5e6e5c0b?w=600&q=80", rating: 4.4, harvestDate: "2025-03-15", description: "Fresh pasteurized whole milk from grass-fed Ayrshire cows. Delivered chilled." },
-  { id: "p9", title: "Sorghum Grain", farmerName: "Eastern Drylands Farm", location: "Kitui, Nigeria", category: "grains", grade: "economy", pricePerKg: 500, availableQty: 6000, organicCert: false, image: "https://images.unsplash.com/photo-1590259223388-aa2e5b3093af?w=600&q=80", rating: 4.0, harvestDate: "2025-02-20", description: "Drought-resistant sorghum grain from semi-arid regions. Ideal for flour and animal feed." },
+  { id: "p8", title: "Fresh Cow Milk", farmerName: "Dairy Gold Co-op", location: "Makurdi, Benue", category: "dairy-poultry", grade: "premium", pricePerKg: 900, availableQty: 3000, organicCert: false, image: "/images/fresh_cow_milk.jpg", rating: 4.4, harvestDate: "2025-03-15", description: "Fresh pasteurized whole milk from grass-fed White Fulani cows in Benue. Delivered chilled." },
+  { id: "p9", title: "Sorghum Grain", farmerName: "Eastern Drylands Farm", location: "Otukpo, Benue", category: "grains", grade: "economy", pricePerKg: 500, availableQty: 6000, organicCert: false, image: "/images/Sorghum_Grain.jpg", rating: 4.0, harvestDate: "2025-02-20", description: "Drought-resistant sorghum grain from Benue drylands. Ideal for flour and animal feed." },
   { id: "p10", title: "Passion Fruit", farmerName: "Coast Tropical Fruits", location: "Kwale, Nigeria", category: "fruits", grade: "premium", pricePerKg: 3000, availableQty: 1200, organicCert: false, image: "https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?w=600&q=80", rating: 4.6, harvestDate: "2025-03-14", description: "Sweet-tart passion fruits bursting with flavor. Perfect for juice and desserts." },
 ];
 
@@ -64,6 +64,34 @@ export const INITIAL_SHIPMENTS: SupplyChainShipment[] = [
       { time: "Day 1", temp: 5.8 }, { time: "Day 2", temp: 5.5 }, { time: "Day 3", temp: 5.3 },
       { time: "Day 4", temp: 5.6 }, { time: "Day 5", temp: 5.4 },
     ],
+  },
+  {
+    id: "BN-FARM-2025-001", produceTitle: "Fresh Kale — Farmer Demo Shipment", origin: "Gboko, Benue", destination: "Makurdi Aggregation Hub", status: "in-transit",
+    driverName: "Adaeze Ibrahim (Agent)", coldStorageTemp: 5.0, routeProgress: 45, escrowAmount: 12000, escrowReleased: false,
+    steps: [
+      { label: "Harvested & Packed", completed: true, timestamp: "2025-03-15 07:00", location: "Gboko Farm" },
+      { label: "Agent Verified & Graded", completed: true, timestamp: "2025-03-15 14:00", location: "Gboko Market" },
+      { label: "Logistics Ordered", completed: true, timestamp: "2025-03-16 08:00", location: "Gboko Depot" },
+      { label: "In Transit to Makurdi", completed: true, timestamp: "2025-03-16 15:00", location: "Gboko-Makurdi Road" },
+      { label: "Arrival at Hub", completed: false, timestamp: "ETA 2025-03-17", location: "Makurdi Hub" },
+      { label: "Escrow Release", completed: false, timestamp: "Pending", location: "Payment Gateway" },
+    ],
+    tempLog: [
+      { time: "Day 1", temp: 5.2 }, { time: "Day 2", temp: 5.0 }, { time: "Day 3", temp: 4.8 },
+    ],
+  },
+  {
+    id: "BN-BUYER-2025-002", produceTitle: "Premium Brown Rice — Buyer Demo Order", origin: "Makurdi Hub", destination: "Lagos Buyer Hub", status: "pending",
+    driverName: "Tunde Iorfa (Logistics)", coldStorageTemp: 4.5, routeProgress: 0, escrowAmount: 28000, escrowReleased: false,
+    steps: [
+      { label: "Order Placed & Escrow Locked", completed: true, timestamp: "2025-03-16 10:00", location: "Lagos Buyer" },
+      { label: "Seller Confirmed", completed: true, timestamp: "2025-03-16 14:00", location: "Makurdi Farm" },
+      { label: "Awaiting Pickup", completed: false, timestamp: "Scheduled 2025-03-17", location: "Makurdi Hub" },
+      { label: "In Transit to Lagos", completed: false, timestamp: "Pending", location: "Makurdi-Lagos Corridor" },
+      { label: "Arrival & Inspection", completed: false, timestamp: "Pending", location: "Lagos Hub" },
+      { label: "Escrow Release", completed: false, timestamp: "Pending", location: "Payment Gateway" },
+    ],
+    tempLog: [{ time: "Day 1", temp: 4.6 }],
   },
 ];
 

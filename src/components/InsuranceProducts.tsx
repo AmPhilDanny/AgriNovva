@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Shield, CheckCircle, XCircle, AlertTriangle, Calculator, FileText, Clock, Heart, Home, TrendingUp, Umbrella, Droplet, Sun, Cloud, Wind, Flame, Leaf, UserCheck, BadgeCheck, CurrencyNaira, ArrowRight, ChevronDown, ChevronUp } from "@phosphor-icons/react";
+import { Shield, CheckCircle, XCircle, Warning, Calculator, FileText, Clock, Heart, House, TrendUp, Umbrella, Drop, Sun, Cloud, Wind, Flame, Leaf, UserCheck, SealCheck, CurrencyNgn, ArrowRight, CaretDown, CaretUp, X } from "@phosphor-icons/react";
 
 interface InsuranceProduct {
   id: string;
@@ -270,16 +270,16 @@ export default function InsuranceProducts() {
                   <h3 className="mt-3 text-lg font-bold text-stone-900">{product.name}</h3>
                   <p className="mt-1 text-sm text-stone-500">{product.provider}</p>
                   <div className="mt-3 flex items-center gap-2">
-                    <span className="text-2xl font-bold text-emerald-800">{product.premiumRate}%</p>
+                    <span className="text-2xl font-bold text-emerald-800">{product.premiumRate}%</span>
                     <span className="text-sm text-stone-500">premium rate</span>
                   </div>
                   <div className="mt-3 flex items-center gap-3 text-xs text-stone-500">
-                    <span className="flex items-center gap-1"><CurrencyNaira className="h-3.5 w-3.5" /> Min: ₦{product.minSumInsured.toLocaleString()}</span>
-                    <span className="flex items-center gap-1"><CurrencyNaira className="h-3.5 w-3.5" /> Max: ₦{product.maxSumInsured.toLocaleString()}</span>
+                    <span className="flex items-center gap-1"><CurrencyNgn className="h-3.5 w-3.5" /> Min: ₦{product.minSumInsured.toLocaleString()}</span>
+                    <span className="flex items-center gap-1"><CurrencyNgn className="h-3.5 w-3.5" /> Max: ₦{product.maxSumInsured.toLocaleString()}</span>
                   </div>
                   <div className="mt-3 flex items-center gap-3 text-xs text-stone-500">
                     <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> {product.payoutSpeed}</span>
-                    <span className="flex items-center gap-1"><BadgeCheck className="h-3.5 w-3.5" /> {product.rating}/5</span>
+                    <span className="flex items-center gap-1"><SealCheck className="h-3.5 w-3.5" /> {product.rating}/5</span>
                   </div>
                 </div>
                 <div className="border-t border-stone-100 p-5">
@@ -288,7 +288,7 @@ export default function InsuranceProducts() {
                     className="flex w-full items-center justify-between text-sm font-medium text-emerald-700 hover:text-emerald-600"
                   >
                     <span>Coverage Details</span>
-                    {expandDetails[product.id] ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                    {expandDetails[product.id] ? <CaretUp className="h-4 w-4" /> : <CaretDown className="h-4 w-4" />}
                   </button>
                 </div>
                 <motion.div
@@ -386,7 +386,7 @@ export default function InsuranceProducts() {
                     <FileText className="mr-1 h-4 w-4" /> View Certificate
                   </button>
                   <button className="flex-1 rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm font-medium text-stone-600">
-                    <ChevronDown className="mr-1 h-4 w-4" /> Details
+                    <CaretDown className="mr-1 h-4 w-4" /> Details
                   </button>
                   {policy.status === "pending_payment" && (
                     <button className="flex-1 rounded-lg bg-emerald-700 px-3 py-2 text-sm font-semibold text-white">
@@ -503,7 +503,7 @@ export default function InsuranceProducts() {
                     <span><strong>Crops:</strong> {selectedProduct.crops.join(", ")}</span>
                   </div>
                   <div className="flex items-center gap-3 text-stone-600">
-                    <Home className="h-5 w-5 text-emerald-600" />
+                    <House className="h-5 w-5 text-emerald-600" />
                     <span><strong>Regions:</strong> {selectedProduct.regions.join(", ")}</span>
                   </div>
                 </div>

@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Search, Filter, UserPlus, BadgeCheck, Star, MapPin, Clock, Shield, AlertTriangle, TrendingUp, Camera, MapPin as MapPinIcon, Image, Trash, CheckCircle, XCircle, Eye, Edit } from "@phosphor-icons/react";
+import { MagnifyingGlass, Funnel, UserPlus, SealCheck, Star, MapPin, Clock, Shield, Warning, TrendUp, Camera, MapPin as MapPinIcon, Image, Trash, CheckCircle, XCircle, Eye, PencilSimple, Factory, Calculator, Leaf, PiggyBank, Buildings, Truck, ShoppingCart, X } from "@phosphor-icons/react";
+import type { TabId, UserRole } from "../types";
 
 interface Agent {
   id: string;
@@ -27,9 +28,9 @@ interface Agent {
 const MOCK_AGENTS: Agent[] = [
   {
     id: "agt-001",
-    name: "Musa Ibrahim",
+    name: "Adaeze Ibrahim",
     phone: "0803 456 7890",
-    email: "musa.ibrahim@agrinovva.ng",
+    email: "adaeze.ibrahim@agrinovva.ng",
     location: "Gboko Main Market",
     lga: "Gboko",
     state: "Benue",
@@ -41,16 +42,16 @@ const MOCK_AGENTS: Agent[] = [
     joinedDate: "2024-01-15",
     lastActive: "2 hours ago",
     verificationScore: 96,
-    photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80",
+    photo: "/images/Adaeze.jpg",
     skills: ["Crop Diagnosis", "Farmer Registration", "Input Verification", "Harvest Grading"],
     shopName: "Ibrahim Agro Services",
     shopAddress: "Gboko Main Market, Stall 45",
   },
   {
     id: "agt-002",
-    name: "Aisha Bello",
+    name: "Amara Bello",
     phone: "0805 678 9012",
-    email: "aisha.bello@agrinovva.ng",
+    email: "amara.bello@agrinovva.ng",
     location: "Makurdi Modern Market",
     lga: "Makurdi",
     state: "Benue",
@@ -62,16 +63,16 @@ const MOCK_AGENTS: Agent[] = [
     joinedDate: "2023-06-20",
     lastActive: "30 mins ago",
     verificationScore: 98,
-    photo: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80",
+    photo: "/images/Amara.jpg",
     skills: ["Crop Diagnosis", "Farmer Registration", "Investment Monitoring", "Financial Literacy Training"],
     shopName: "Bello Farm Connect",
     shopAddress: "Makurdi Modern Market, Block B, Shop 12",
   },
   {
     id: "agt-003",
-    name: "John Ochoga",
+    name: "Chidi Ochoga",
     phone: "0807 890 1234",
-    email: "john.ochoga@agrinovva.ng",
+    email: "chidi.ochoga@agrinovva.ng",
     location: "Otukpo Central Market",
     lga: "Otukpo",
     state: "Benue",
@@ -83,7 +84,7 @@ const MOCK_AGENTS: Agent[] = [
     joinedDate: "2024-08-10",
     lastActive: "1 day ago",
     verificationScore: 82,
-    photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&q=80",
+    photo: "/images/Chidi.jpg",
     skills: ["Crop Diagnosis", "Farmer Registration", "Harvest Grading"],
     shopName: "Ochoga Agro Hub",
     shopAddress: "Otukpo Central Market, Section C",
@@ -104,16 +105,16 @@ const MOCK_AGENTS: Agent[] = [
     joinedDate: "2024-11-01",
     lastActive: "3 hours ago",
     verificationScore: 75,
-    photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80",
+    photo: "/images/Fatima.jpg",
     skills: ["Crop Diagnosis", "Farmer Registration"],
     shopName: "Abubakar Farm Point",
     shopAddress: "Katsina-Ala Market, New Section",
   },
   {
     id: "agt-005",
-    name: "Peter Okonkwo",
+    name: "Emeka Okonkwo",
     phone: "0810 123 4567",
-    email: "peter.okonkwo@agrinovva.ng",
+    email: "emeka.okonkwo@agrinovva.ng",
     location: "Vandeikya Market",
     lga: "Vandeikya",
     state: "Benue",
@@ -125,16 +126,16 @@ const MOCK_AGENTS: Agent[] = [
     joinedDate: "2024-03-12",
     lastActive: "2 weeks ago",
     verificationScore: 88,
-    photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80",
+    photo: "/images/Emeka.jpg",
     skills: ["Crop Diagnosis", "Input Verification", "Harvest Grading", "Logistics Coordination"],
     shopName: "Okonkwo Agro Center",
     shopAddress: "Vandeikya Market, Old Wing",
   },
   {
     id: "agt-006",
-    name: "Grace Ogbu",
+    name: "Nneka Ogbu",
     phone: "0812 345 6789",
-    email: "grace.ogbu@agrinovva.ng",
+    email: "nneka.ogbu@agrinovva.ng",
     location: "Gwer West Market",
     lga: "Gwer West",
     state: "Benue",
@@ -146,7 +147,7 @@ const MOCK_AGENTS: Agent[] = [
     joinedDate: "2023-11-28",
     lastActive: "45 mins ago",
     verificationScore: 93,
-    photo: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&q=80",
+    photo: "/images/Nneka.jpg",
     skills: ["Crop Diagnosis", "Farmer Registration", "Investment Monitoring", "Harvest Grading"],
     shopName: "Ogbu Farm Solutions",
     shopAddress: "Gwer West Market, Main Road",
@@ -167,7 +168,7 @@ const statusColors = {
   blacklisted: "bg-red-100 text-red-700",
 };
 
-export default function AgentNetwork() {
+export default function AgentNetwork({ onNavigate, role }: { onNavigate?: (t: TabId) => void; role?: UserRole }) {
   const [search, setSearch] = useState("");
   const [tierFilter, setTierFilter] = useState<string>("all");
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -203,6 +204,57 @@ export default function AgentNetwork() {
           </button>
         </div>
 
+        {/* Agent Services Hub — every agent service wired to here */}
+        <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 shadow-sm">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h3 className="text-sm font-bold text-emerald-900">Agent Services Hub</h3>
+            <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-emerald-700 border border-emerald-200">Tap any card → opens the service (pre-filled for agents)</span>
+          </div>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { id: "agri-advisor" as TabId, label: "Crop Diagnosis", sub: "AI + field photo", icon: Leaf, color: "bg-emerald-600" },
+              { id: "input-verification" as TabId, label: "Input Verification", sub: "Seed & fertilizer QR", icon: Factory, color: "bg-blue-600" },
+              { id: "supply-chain" as TabId, label: "Harvest & Supply Chain", sub: "Grading + logistics", icon: Truck, color: "bg-amber-600" },
+              { id: "investment-exchange" as TabId, label: "Investment Monitoring", sub: "Track farmer funds", icon: PiggyBank, color: "bg-emerald-700" },
+              { id: "price-contracts" as TabId, label: "Price & Escrow", sub: "Floor price + escrow", icon: Calculator, color: "bg-slate-700" },
+              { id: "insurance" as TabId, label: "Insurance Assist", sub: "Enroll & claims", icon: Shield, color: "bg-teal-600" },
+              { id: "marketplace" as TabId, label: "Marketplace Oversight", sub: "Listings & orders", icon: ShoppingCart, color: "bg-stone-700" },
+              { id: "government" as TabId, label: "Government Report", sub: "LGA submission", icon: Buildings, color: "bg-purple-600" },
+            ].filter(s => {
+              const allowed: Record<string, UserRole[]> = {
+                "agri-advisor": ["farmer"],
+                "input-verification": ["farmer", "buyer", "logistics"],
+                "supply-chain": ["logistics"],
+                "investment-exchange": ["farmer", "buyer"],
+                "price-contracts": ["farmer", "buyer"],
+                "insurance": ["farmer", "buyer"],
+                "marketplace": ["farmer", "buyer", "logistics"],
+                "government": ["logistics"],
+              };
+              return !role || (allowed[s.id] || []).includes(role);
+            }).map((s) => {
+              const Icon = s.icon;
+              return (
+                <button
+                  key={s.id}
+                  onClick={() => onNavigate?.(s.id)}
+                  className="group flex items-center gap-3 rounded-xl border border-white bg-white p-3 text-left shadow-sm transition-all hover:shadow-md hover:border-emerald-200"
+                >
+                  <span className={`flex h-9 w-9 items-center justify-center rounded-lg ${s.color} text-white shrink-0`}>
+                    <Icon className="h-5 w-5" weight="fill" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-xs font-bold text-stone-900 group-hover:text-emerald-700">{s.label}</span>
+                    <span className="block text-[11px] text-stone-500">{s.sub}</span>
+                  </span>
+                  <span className="ml-auto text-emerald-600">→</span>
+                </button>
+              );
+            })}
+          </div>
+          <p className="mt-3 text-[11px] text-emerald-700/80">Agents start here: diagnose → verify inputs → monitor investment → grade harvest → trigger escrow. Every service opens in one tap — no hunting through tabs.</p>
+        </div>
+
         {/* Tab Navigation */}
         <div className="mb-6 flex gap-1.5 rounded-xl border border-stone-200 bg-stone-50 p-1">
           {["agents", "audits", "analytics"].map((tab) => (
@@ -224,7 +276,7 @@ export default function AgentNetwork() {
             <div className="mb-6 flex flex-wrap gap-3">
               <div className="flex-1 min-w-[200px]">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400" />
+                  <MagnifyingGlass className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400" />
                   <input
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
@@ -255,7 +307,7 @@ export default function AgentNetwork() {
             <div className="mb-6 grid gap-4 sm:grid-cols-4">
               <div className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm">
                 <div className="flex items-center gap-2">
-                  <BadgeCheck className="h-5 w-5 text-emerald-600" />
+                  <SealCheck className="h-5 w-5 text-emerald-600" />
                   <span className="text-sm font-medium text-stone-500">Active Agents</span>
                 </div>
                 <p className="mt-2 text-3xl font-bold text-emerald-800">{MOCK_AGENTS.filter(a => a.status === "active").length}</p>
@@ -269,7 +321,7 @@ export default function AgentNetwork() {
               </div>
               <div className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm">
                 <div className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5 text-emerald-600" />
+                  <TrendUp className="h-5 w-5 text-emerald-600" />
                   <span className="text-sm font-medium text-stone-500">Total Transactions</span>
                 </div>
                 <p className="mt-2 text-3xl font-bold text-emerald-800">{MOCK_AGENTS.reduce((sum, a) => sum + a.totalTransactions, 0).toLocaleString()}</p>
@@ -333,11 +385,11 @@ export default function AgentNetwork() {
         {activeTab === "audits" && (
           <div className="space-y-4">
             {[
-              { agent: "Musa Ibrahim", type: "Investment Monitoring", farm: "Amina Bello - Rice Farm", date: "2025-01-15", status: "completed", score: 95, photos: 12, issues: 0 },
-              { agent: "Aisha Bello", type: "Farmer Verification", farm: "Ibrahim Musa - Maize Farm", date: "2025-01-14", status: "completed", score: 98, photos: 8, issues: 0 },
-              { agent: "John Ochoga", type: "Input Verification", farm: "Grace Okafor - Soybean Farm", date: "2025-01-13", status: "pending_review", score: 87, photos: 6, issues: 1 },
+              { agent: "Adaeze Ibrahim", type: "Investment Monitoring", farm: "Amina Bello - Rice Farm", date: "2025-01-15", status: "completed", score: 95, photos: 12, issues: 0 },
+              { agent: "Amara Bello", type: "Farmer Verification", farm: "Ibrahim Musa - Maize Farm", date: "2025-01-14", status: "completed", score: 98, photos: 8, issues: 0 },
+              { agent: "Chidi Ochoga", type: "Input Verification", farm: "Grace Okafor - Soybean Farm", date: "2025-01-13", status: "pending_review", score: 87, photos: 6, issues: 1 },
               { agent: "Fatima Abubakar", type: "Harvest Grading", farm: "Yusuf Abdullahi - Yam Farm", date: "2025-01-12", status: "flagged", score: 72, photos: 4, issues: 2 },
-              { agent: "Grace Ogbu", type: "Crop Diagnosis", farm: "Fatima Ibrahim - Groundnut Farm", date: "2025-01-11", status: "completed", score: 94, photos: 10, issues: 0 },
+              { agent: "Nneka Ogbu", type: "Crop Diagnosis", farm: "Fatima Ibrahim - Groundnut Farm", date: "2025-01-11", status: "completed", score: 94, photos: 10, issues: 0 },
             ].map((audit, i) => (
               <motion.div
                 key={i}
@@ -363,7 +415,7 @@ export default function AgentNetwork() {
                       <Eye className="mr-1 h-3 w-3" /> Review
                     </button>
                     <button className="flex-1 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-600">
-                      <Edit className="mr-1 h-3 w-3" /> Annotate
+                      <PencilSimple className="mr-1 h-3 w-3" /> Annotate
                     </button>
                   </div>
                 </div>
@@ -441,7 +493,7 @@ export default function AgentNetwork() {
                     {getStatusLabel(selectedAgent.status)}
                   </span>
                   <span className="rounded-full bg-emerald-600/90 px-2 py-0.5 text-[10px] font-medium text-white backdrop-blur-sm">
-                    <BadgeCheck className="mr-1 inline h-3 w-3" weight="fill" />
+                    <SealCheck className="mr-1 inline h-3 w-3" weight="fill" />
                     Verified: {selectedAgent.verificationScore}%
                   </span>
                 </div>
@@ -485,7 +537,7 @@ export default function AgentNetwork() {
                     <Eye className="mr-1 h-4 w-4" /> View Field Reports
                   </button>
                   <button className="flex-1 rounded-xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-white">
-                    <TrendingUp className="mr-1 h-4 w-4" /> Performance History
+                    <TrendUp className="mr-1 h-4 w-4" /> Performance History
                   </button>
                 </div>
               </div>

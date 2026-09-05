@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { User, Users, Truck, MagnifyingGlass, Bell, ShoppingCart, Leaf, X, List, SealCheck } from "@phosphor-icons/react";
-import type { UserRole } from "../types";
+import type { UserRole, TabId } from "../types";
 
 interface NavbarProps {
   role: UserRole;
   onRoleChange: (r: UserRole) => void;
   cartCount: number;
   onCartOpen: () => void;
+  activeTab?: TabId;
+  onNavigate?: (t: TabId) => void;
 }
 
 const roles: { id: UserRole; label: string; icon: typeof User }[] = [
@@ -16,7 +18,7 @@ const roles: { id: UserRole; label: string; icon: typeof User }[] = [
   { id: "logistics", label: "Logistics", icon: Truck },
 ];
 
-export default function Navbar({ role, onRoleChange, cartCount, onCartOpen }: NavbarProps) {
+export default function Navbar({ role, onRoleChange, cartCount, onCartOpen, activeTab, onNavigate }: NavbarProps) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -50,6 +52,21 @@ export default function Navbar({ role, onRoleChange, cartCount, onCartOpen }: Na
               );
             })}
           </div>
+
+          {onNavigate && (
+            <button
+              onClick={() => onNavigate("agent-network")}
+              className={`hidden items-center gap-1.5 rounded-xl border px-3.5 py-2 text-xs font-bold transition-all lg:inline-flex ${
+                activeTab === "agent-network"
+                  ? "border-emerald-700 bg-emerald-700 text-white shadow-sm"
+                  : "border-emerald-200 bg-white text-emerald-700 hover:bg-emerald-50"
+              }`}
+            >
+              <Users weight={activeTab === "agent-network" ? "fill" : "regular"} className="h-4 w-4" />
+              Agent Network
+              <span className={`ml-1 hidden rounded-full px-1.5 py-0.5 text-[10px] xl:inline ${activeTab === "agent-network" ? "bg-white/20 text-white" : "bg-emerald-100 text-emerald-700"}`}>Hub</span>
+            </button>
+          )}
 
           {/* Search */}
           <button onClick={() => setSearchOpen(!searchOpen)} className="rounded-lg p-2 text-emerald-600 hover:bg-emerald-50">
@@ -115,6 +132,14 @@ export default function Navbar({ role, onRoleChange, cartCount, onCartOpen }: Na
                   </button>
                 );
               })}
+              {onNavigate && (
+                <button
+                  onClick={() => { onNavigate("agent-network"); setMenuOpen(false); }}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-bold ${activeTab === "agent-network" ? "bg-emerald-700 text-white" : "bg-emerald-50 text-emerald-700"}`}
+                >
+                  <Users weight={activeTab === "agent-network" ? "fill" : "regular"} className="h-5 w-5" /> Agent Network — Hub
+                </button>
+              )}
               <button onClick={() => setSearchOpen(!searchOpen)} className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-emerald-600">
                 <MagnifyingGlass className="h-5 w-5" /> Search
               </button>

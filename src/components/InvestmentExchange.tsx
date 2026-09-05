@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Search, Filter, Heart, ArrowRight, CheckCircle, Clock, MapPin, Users, CurrencyNaira, TrendingUp, Shield, Star, AlertTriangle } from "@phosphor-icons/react";
+import { MagnifyingGlass, Funnel, Heart, ArrowRight, CheckCircle, Clock, MapPin, Users, CurrencyNgn, TrendUp, Shield, Star, Warning, X } from "@phosphor-icons/react";
 
 interface FarmingOpportunity {
   id: string;
@@ -245,7 +245,7 @@ export default function InvestmentExchange() {
         <div className="mb-6 flex flex-wrap gap-3">
           <div className="flex-1 min-w-[200px]">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400" />
+              <MagnifyingGlass className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400" />
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -289,7 +289,7 @@ export default function InvestmentExchange() {
           <>
             {filtered.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-16 text-center">
-                <AlertTriangle className="h-12 w-12 text-stone-300" />
+                <Warning className="h-12 w-12 text-stone-300" />
                 <p className="mt-3 text-sm font-medium text-stone-500">No opportunities match your filters.</p>
               </div>
             ) : (
@@ -392,7 +392,7 @@ export default function InvestmentExchange() {
           <div className="grid gap-4 sm:grid-cols-3">
             <div className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm">
               <div className="flex items-center gap-2 text-emerald-600">
-                <TrendingUp className="h-5 w-5" />
+                <TrendUp className="h-5 w-5" />
                 <span className="text-sm font-medium">Total Returns</span>
               </div>
               <p className="mt-2 text-3xl font-bold text-emerald-800">₦ 2,840,000</p>
@@ -400,7 +400,7 @@ export default function InvestmentExchange() {
             </div>
             <div className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm">
               <div className="flex items-center gap-2 text-emerald-600">
-                <CurrencyNaira className="h-5 w-5" />
+                <CurrencyNgn className="h-5 w-5" />
                 <span className="text-sm font-medium">Available to Withdraw</span>
               </div>
               <p className="mt-2 text-3xl font-bold text-emerald-800">₦ 1,200,000</p>
