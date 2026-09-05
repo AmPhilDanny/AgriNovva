@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
-  UserPlus, Key, Leaf, Factory, Truck, PiggyBank,
-  Calculator, Shield, Buildings, ShoppingCart, Eye, Lock,
-  User, Phone, Envelope, MapPin, CheckCircle, ArrowRight,
+  UserPlus, Key, Leaf, Shield, Camera, TrendUp,
+  Lock, User, Phone, Envelope, MapPin, CheckCircle, ArrowRight,
 } from "@phosphor-icons/react";
 import type { TabId, UserRole } from "../types";
 
@@ -42,53 +41,64 @@ export default function AgentNetwork({ onNavigate, role, onAgentLogin }: AgentNe
           </p>
         </div>
 
-        {/* Agent Services Hub — public, role-filtered */}
-        <div className="mb-8 rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 shadow-sm">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <h3 className="text-sm font-bold text-emerald-900">Agent Services Hub</h3>
-            <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-emerald-700 border border-emerald-200">Tap any card → opens the service</span>
+        {/* Hero image — Farmer Support Centre & Crop, Disease & Weather Hub */}
+        <div className="mb-8 overflow-hidden rounded-2xl shadow-lg">
+          <img
+            src="/images/AgriNovva_Hub.jpg"
+            alt="AgriNovva Farmer Support Centre & Learning Hub with Crop, Disease & Weather Hub board — extension agent helping farmers"
+            className="w-full h-auto object-cover max-h-[480px]"
+          />
+        </div>
+
+        {/* How to Access an Agent + How It Works */}
+        <div className="mb-8 grid gap-6 lg:grid-cols-2">
+          {/* How to Access */}
+          <div className="rounded-2xl border border-emerald-200 bg-white p-5 sm:p-6 shadow-sm">
+            <h3 className="text-lg font-black text-emerald-900">How to Access an Agent</h3>
+            <p className="mt-1 text-sm text-stone-500">Our agents are at solar-powered hubs across every LGA in Benue State</p>
+            <div className="mt-4 space-y-3">
+              {[
+                { step: "1", title: "Visit a Hub", desc: "Walk into any AgriNovva Farmer Support Centre at Gboko, Makurdi, Otukpo, Katsina-Ala, Vandeikya, or Gwer West market." },
+                { step: "2", title: "Scan the QR Code", desc: "At the solar board, scan the QR code to download the app or connect to an agent instantly." },
+                { step: "3", title: "Call an Agent", desc: "Dial the toll-free line 0800-AGRI-NOV or tap 'Agent Login' below to reach your nearest verified agent." },
+                { step: "4", title: "Agent Comes to You", desc: "No transport? Our agents visit your farm for crop diagnosis, registration, and input verification — all free." },
+              ].map((item) => (
+                <div key={item.step} className="flex gap-3">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-xs font-black text-white">{item.step}</span>
+                  <div>
+                    <p className="text-sm font-bold text-stone-900">{item.title}</p>
+                    <p className="text-xs text-stone-500 leading-relaxed">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              { id: "agri-advisor" as TabId, label: "Crop Diagnosis", sub: "AI + field photo", icon: Leaf, color: "bg-emerald-600" },
-              { id: "input-verification" as TabId, label: "Input Verification", sub: "Seed & fertilizer QR", icon: Factory, color: "bg-blue-600" },
-              { id: "supply-chain" as TabId, label: "Harvest & Supply Chain", sub: "Grading + logistics", icon: Truck, color: "bg-amber-600" },
-              { id: "investment-exchange" as TabId, label: "Investment Monitoring", sub: "Track farmer funds", icon: PiggyBank, color: "bg-emerald-700" },
-              { id: "price-contracts" as TabId, label: "Price & Escrow", sub: "Floor price + escrow", icon: Calculator, color: "bg-slate-700" },
-              { id: "insurance" as TabId, label: "Insurance Assist", sub: "Enroll & claims", icon: Shield, color: "bg-teal-600" },
-              { id: "marketplace" as TabId, label: "Marketplace Oversight", sub: "Listings & orders", icon: ShoppingCart, color: "bg-stone-700" },
-              { id: "government" as TabId, label: "Government Report", sub: "LGA submission", icon: Buildings, color: "bg-purple-600" },
-            ].filter(s => {
-              const allowed: Record<string, UserRole[]> = {
-                "agri-advisor": ["farmer"],
-                "input-verification": ["farmer", "buyer", "logistics"],
-                "supply-chain": ["logistics"],
-                "investment-exchange": ["farmer", "buyer"],
-                "price-contracts": ["farmer", "buyer"],
-                "insurance": ["farmer", "buyer"],
-                "marketplace": ["farmer", "buyer", "logistics"],
-                "government": ["logistics"],
-              };
-              return !role || (allowed[s.id] || []).includes(role);
-            }).map((s) => {
-              const Icon = s.icon;
-              return (
-                <button
-                  key={s.id}
-                  onClick={() => onNavigate?.(s.id)}
-                  className="group flex items-center gap-3 rounded-xl border border-white bg-white p-3 text-left shadow-sm transition-all hover:shadow-md hover:border-emerald-200"
-                >
-                  <span className={`flex h-9 w-9 items-center justify-center rounded-lg ${s.color} text-white shrink-0`}>
-                    <Icon className="h-5 w-5" weight="fill" />
-                  </span>
-                  <span className="min-w-0">
-                    <span className="block text-xs font-bold text-stone-900 group-hover:text-emerald-700">{s.label}</span>
-                    <span className="block text-[11px] text-stone-500">{s.sub}</span>
-                  </span>
-                  <span className="ml-auto text-emerald-600">→</span>
-                </button>
-              );
-            })}
+
+          {/* How It Works */}
+          <div className="rounded-2xl border border-emerald-200 bg-white p-5 sm:p-6 shadow-sm">
+            <h3 className="text-lg font-black text-emerald-900">How AgriNovva Works</h3>
+            <p className="mt-1 text-sm text-stone-500">From farm to market — verified at every step</p>
+            <div className="mt-4 space-y-3">
+              {[
+                { icon: Camera, title: "Snap a Crop Photo", desc: "Point your phone at a diseased leaf. Our TFLite AI runs 100% offline — no internet needed." },
+                { icon: Leaf, title: "Get AI Diagnosis", desc: "Identifies 38+ diseases (Early Blight, Red Rust, etc.) with treatment in Hausa, Yoruba, Igbo, Pidgin, or English." },
+                { icon: Shield, title: "Verify Inputs", desc: "Scan QR codes on seeds, fertilizers, and pesticides to confirm authenticity before buying." },
+                { icon: TrendUp, title: "Sell & Earn", desc: "Post verified produce to the marketplace. Track shipments. Get paid via escrow — fraud-free." },
+              ].map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div key={item.title} className="flex gap-3">
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
+                      <Icon className="h-4 w-4" weight="fill" />
+                    </span>
+                    <div>
+                      <p className="text-sm font-bold text-stone-900">{item.title}</p>
+                      <p className="text-xs text-stone-500 leading-relaxed">{item.desc}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
 
