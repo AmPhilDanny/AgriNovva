@@ -1,214 +1,52 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { MagnifyingGlass, Funnel, UserPlus, SealCheck, Star, MapPin, Clock, Shield, Warning, TrendUp, Camera, MapPin as MapPinIcon, Image, Trash, CheckCircle, XCircle, Eye, PencilSimple, Factory, Calculator, Leaf, PiggyBank, Buildings, Truck, ShoppingCart, X } from "@phosphor-icons/react";
+import {
+  UserPlus, Key, Leaf, Factory, Truck, PiggyBank,
+  Calculator, Shield, Buildings, ShoppingCart, Eye, Lock,
+  User, Phone, Envelope, MapPin, CheckCircle, ArrowRight,
+} from "@phosphor-icons/react";
 import type { TabId, UserRole } from "../types";
 
-interface Agent {
-  id: string;
-  name: string;
-  phone: string;
-  email: string;
-  location: string;
-  lga: string;
-  state: string;
-  tier: "bronze" | "silver" | "gold" | "platinum";
-  rating: number;
-  totalTransactions: number;
-  bondedAmount: number;
-  status: "active" | "suspended" | "pending" | "blacklisted";
-  joinedDate: string;
-  lastActive: string;
-  verificationScore: number;
-  photo: string;
-  skills: string[];
-  shopName: string;
-  shopAddress: string;
+interface AgentNetworkProps {
+  onNavigate?: (t: TabId) => void;
+  role?: UserRole;
+  onAgentLogin?: () => void;
 }
 
-const MOCK_AGENTS: Agent[] = [
-  {
-    id: "agt-001",
-    name: "Adaeze Ibrahim",
-    phone: "0803 456 7890",
-    email: "adaeze.ibrahim@agrinovva.ng",
-    location: "Gboko Main Market",
-    lga: "Gboko",
-    state: "Benue",
-    tier: "gold",
-    rating: 4.9,
-    totalTransactions: 234,
-    bondedAmount: 5000000,
-    status: "active",
-    joinedDate: "2024-01-15",
-    lastActive: "2 hours ago",
-    verificationScore: 96,
-    photo: "/images/Adaeze.jpg",
-    skills: ["Crop Diagnosis", "Farmer Registration", "Input Verification", "Harvest Grading"],
-    shopName: "Ibrahim Agro Services",
-    shopAddress: "Gboko Main Market, Stall 45",
-  },
-  {
-    id: "agt-002",
-    name: "Amara Bello",
-    phone: "0805 678 9012",
-    email: "amara.bello@agrinovva.ng",
-    location: "Makurdi Modern Market",
-    lga: "Makurdi",
-    state: "Benue",
-    tier: "platinum",
-    rating: 4.8,
-    totalTransactions: 412,
-    bondedAmount: 10000000,
-    status: "active",
-    joinedDate: "2023-06-20",
-    lastActive: "30 mins ago",
-    verificationScore: 98,
-    photo: "/images/Amara.jpg",
-    skills: ["Crop Diagnosis", "Farmer Registration", "Investment Monitoring", "Financial Literacy Training"],
-    shopName: "Bello Farm Connect",
-    shopAddress: "Makurdi Modern Market, Block B, Shop 12",
-  },
-  {
-    id: "agt-003",
-    name: "Chidi Ochoga",
-    phone: "0807 890 1234",
-    email: "chidi.ochoga@agrinovva.ng",
-    location: "Otukpo Central Market",
-    lga: "Otukpo",
-    state: "Benue",
-    tier: "silver",
-    rating: 4.5,
-    totalTransactions: 89,
-    bondedAmount: 2000000,
-    status: "active",
-    joinedDate: "2024-08-10",
-    lastActive: "1 day ago",
-    verificationScore: 82,
-    photo: "/images/Chidi.jpg",
-    skills: ["Crop Diagnosis", "Farmer Registration", "Harvest Grading"],
-    shopName: "Ochoga Agro Hub",
-    shopAddress: "Otukpo Central Market, Section C",
-  },
-  {
-    id: "agt-004",
-    name: "Fatima Abubakar",
-    phone: "0809 012 3456",
-    email: "fatima.abubakar@agrinovva.ng",
-    location: "Katsina-Ala Market",
-    lga: "Katsina-Ala",
-    state: "Benue",
-    tier: "bronze",
-    rating: 4.2,
-    totalTransactions: 34,
-    bondedAmount: 1000000,
-    status: "pending",
-    joinedDate: "2024-11-01",
-    lastActive: "3 hours ago",
-    verificationScore: 75,
-    photo: "/images/Fatima.jpg",
-    skills: ["Crop Diagnosis", "Farmer Registration"],
-    shopName: "Abubakar Farm Point",
-    shopAddress: "Katsina-Ala Market, New Section",
-  },
-  {
-    id: "agt-005",
-    name: "Emeka Okonkwo",
-    phone: "0810 123 4567",
-    email: "emeka.okonkwo@agrinovva.ng",
-    location: "Vandeikya Market",
-    lga: "Vandeikya",
-    state: "Benue",
-    tier: "silver",
-    rating: 4.6,
-    totalTransactions: 156,
-    bondedAmount: 3000000,
-    status: "suspended",
-    joinedDate: "2024-03-12",
-    lastActive: "2 weeks ago",
-    verificationScore: 88,
-    photo: "/images/Emeka.jpg",
-    skills: ["Crop Diagnosis", "Input Verification", "Harvest Grading", "Logistics Coordination"],
-    shopName: "Okonkwo Agro Center",
-    shopAddress: "Vandeikya Market, Old Wing",
-  },
-  {
-    id: "agt-006",
-    name: "Nneka Ogbu",
-    phone: "0812 345 6789",
-    email: "nneka.ogbu@agrinovva.ng",
-    location: "Gwer West Market",
-    lga: "Gwer West",
-    state: "Benue",
-    tier: "gold",
-    rating: 4.7,
-    totalTransactions: 198,
-    bondedAmount: 5000000,
-    status: "active",
-    joinedDate: "2023-11-28",
-    lastActive: "45 mins ago",
-    verificationScore: 93,
-    photo: "/images/Nneka.jpg",
-    skills: ["Crop Diagnosis", "Farmer Registration", "Investment Monitoring", "Harvest Grading"],
-    shopName: "Ogbu Farm Solutions",
-    shopAddress: "Gwer West Market, Main Road",
-  },
-];
+export default function AgentNetwork({ onNavigate, role, onAgentLogin }: AgentNetworkProps) {
+  const [showLogin, setShowLogin] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [loginError, setLoginError] = useState("");
 
-const tierColors = {
-  bronze: "bg-amber-100 text-amber-700 border-amber-200",
-  silver: "bg-slate-100 text-slate-700 border-slate-200",
-  gold: "bg-yellow-100 text-yellow-700 border-yellow-200",
-  platinum: "bg-purple-100 text-purple-700 border-purple-200",
-};
-
-const statusColors = {
-  active: "bg-emerald-100 text-emerald-700",
-  suspended: "bg-amber-100 text-amber-700",
-  pending: "bg-blue-100 text-blue-700",
-  blacklisted: "bg-red-100 text-red-700",
-};
-
-export default function AgentNetwork({ onNavigate, role }: { onNavigate?: (t: TabId) => void; role?: UserRole }) {
-  const [search, setSearch] = useState("");
-  const [tierFilter, setTierFilter] = useState<string>("all");
-  const [statusFilter, setStatusFilter] = useState<string>("all");
-  const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
-  const [showAddAgent, setShowAddAgent] = useState(false);
-  const [activeTab, setActiveTab] = useState<"agents" | "audits" | "analytics">("agents");
-
-  const filtered = useMemo(() => {
-    return MOCK_AGENTS.filter((agent) => {
-      const matchesSearch = agent.name.toLowerCase().includes(search.toLowerCase()) ||
-        agent.location.toLowerCase().includes(search.toLowerCase()) ||
-        agent.lga.toLowerCase().includes(search.toLowerCase());
-      const matchesTier = tierFilter === "all" || agent.tier === tierFilter;
-      const matchesStatus = statusFilter === "all" || agent.status === statusFilter;
-      return matchesSearch && matchesTier && matchesStatus;
-    });
-  }, [search, tierFilter, statusFilter]);
-
-  const getTierLabel = (tier: string) => tier.charAt(0).toUpperCase() + tier.slice(1);
-  const getStatusLabel = (status: string) => status.charAt(0).toUpperCase() + status.slice(1);
+  const handleDemoLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError("");
+    if (!loginEmail || !loginPassword) {
+      setLoginError("Please enter email and password");
+      return;
+    }
+    // Demo login — any credentials work
+    onAgentLogin?.();
+  };
 
   return (
     <section className="py-8 sm:py-12">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h2 className="text-2xl font-bold text-emerald-900">Extension Agent Network</h2>
-            <p className="mt-1 text-sm text-stone-500">Manage agents, verify performance, audit field reports, track commissions</p>
-          </div>
-          <button onClick={() => setShowAddAgent(true)} className="inline-flex items-center gap-2 rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-emerald-600">
-            <UserPlus className="h-4 w-4" />
-            Add New Agent
-          </button>
+        {/* Header */}
+        <div className="mb-8 text-center">
+          <h2 className="text-2xl font-black text-emerald-900 sm:text-3xl">Extension Agent Network</h2>
+          <p className="mt-2 max-w-2xl mx-auto text-sm text-stone-500">
+            AgriNovva's verified extension agents deliver AI-powered diagnostics, farmer registration, and input verification across every LGA in Benue State.
+          </p>
         </div>
 
-        {/* Agent Services Hub — every agent service wired to here */}
-        <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 shadow-sm">
+        {/* Agent Services Hub — public, role-filtered */}
+        <div className="mb-8 rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h3 className="text-sm font-bold text-emerald-900">Agent Services Hub</h3>
-            <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-emerald-700 border border-emerald-200">Tap any card → opens the service (pre-filled for agents)</span>
+            <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-emerald-700 border border-emerald-200">Tap any card → opens the service</span>
           </div>
           <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {[
@@ -252,368 +90,229 @@ export default function AgentNetwork({ onNavigate, role }: { onNavigate?: (t: Ta
               );
             })}
           </div>
-          <p className="mt-3 text-[11px] text-emerald-700/80">Agents start here: diagnose → verify inputs → monitor investment → grade harvest → trigger escrow. Every service opens in one tap — no hunting through tabs.</p>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="mb-6 flex gap-1.5 rounded-xl border border-stone-200 bg-stone-50 p-1">
-          {["agents", "audits", "analytics"].map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab as any)}
-              className={`flex-1 rounded-lg px-3 py-2 text-xs font-medium transition-all ${activeTab === tab ? "bg-white text-emerald-800 shadow-sm" : "text-stone-500 hover:text-stone-700"}`}
-            >
-              {tab === "agents" && "Agents Directory"}
-              {tab === "audits" && "Field Audits"}
-              {tab === "analytics" && "Performance Analytics"}
-            </button>
-          ))}
-        </div>
+        {/* Agent Login / Register CTA */}
+        <div className="relative overflow-hidden rounded-[2rem] border border-emerald-200 bg-gradient-to-br from-emerald-800 via-emerald-700 to-teal-800 p-6 sm:p-8 lg:p-10 shadow-xl">
+          <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-white/5 blur-3xl" />
+          <div className="pointer-events-none absolute -left-16 -bottom-16 h-64 w-64 rounded-full bg-emerald-400/10 blur-3xl" />
 
-        {activeTab === "agents" && (
-          <>
-            {/* Filters */}
-            <div className="mb-6 flex flex-wrap gap-3">
-              <div className="flex-1 min-w-[200px]">
-                <div className="relative">
-                  <MagnifyingGlass className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400" />
-                  <input
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Search agent, location, LGA..."
-                    className="w-full rounded-lg border border-stone-200 bg-white pl-10 pr-4 py-2 text-sm outline-none focus:border-emerald-500"
-                  />
-                </div>
+          <div className="relative grid gap-8 lg:grid-cols-2 lg:items-center">
+            {/* Left — CTA text */}
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-bold text-white backdrop-blur">
+                <Lock className="h-3.5 w-3.5" />
+                Agent Portal — Verified Access Only
               </div>
-              <div className="flex gap-2">
-                <select value={tierFilter} onChange={(e) => setTierFilter(e.target.value)} className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none">
-                  <option value="all">All Tiers</option>
-                  <option value="platinum">Platinum</option>
-                  <option value="gold">Gold</option>
-                  <option value="silver">Silver</option>
-                  <option value="bronze">Bronze</option>
-                </select>
-                <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none">
-                  <option value="all">All Status</option>
-                  <option value="active">Active</option>
-                  <option value="pending">Pending</option>
-                  <option value="suspended">Suspended</option>
-                  <option value="blacklisted">Blacklisted</option>
-                </select>
-              </div>
-            </div>
+              <h2 className="mt-4 text-2xl font-black leading-tight text-white sm:text-3xl">
+                Are You an Extension Agent?
+              </h2>
+              <p className="mt-3 max-w-lg text-sm leading-relaxed text-emerald-50">
+                Access the agent dashboard to manage farmer registrations, run crop diagnoses, verify inputs, monitor investments, and submit LGA reports — all from one place.
+              </p>
 
-            {/* Stats Cards */}
-            <div className="mb-6 grid gap-4 sm:grid-cols-4">
-              <div className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm">
-                <div className="flex items-center gap-2">
-                  <SealCheck className="h-5 w-5 text-emerald-600" />
-                  <span className="text-sm font-medium text-stone-500">Active Agents</span>
-                </div>
-                <p className="mt-2 text-3xl font-bold text-emerald-800">{MOCK_AGENTS.filter(a => a.status === "active").length}</p>
+              <div className="mt-5 grid grid-cols-2 gap-2">
+                {[
+                  { icon: CheckCircle, text: "Farmer Registration" },
+                  { icon: CheckCircle, text: "AI Crop Diagnosis" },
+                  { icon: CheckCircle, text: "Input Verification" },
+                  { icon: CheckCircle, text: "Investment Monitoring" },
+                  { icon: CheckCircle, text: "Harvest Grading" },
+                  { icon: CheckCircle, text: "LGA Reports" },
+                ].map((f) => {
+                  const Icon = f.icon;
+                  return (
+                    <div key={f.text} className="flex items-center gap-2 rounded-xl bg-white/10 px-3 py-2 backdrop-blur">
+                      <Icon className="h-4 w-4 text-emerald-300" weight="fill" />
+                      <span className="text-xs font-medium text-white">{f.text}</span>
+                    </div>
+                  );
+                })}
               </div>
-              <div className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm">
-                <div className="flex items-center gap-2">
-                  <Star className="h-5 w-5 text-amber-500" weight="fill" />
-                  <span className="text-sm font-medium text-stone-500">Avg Rating</span>
-                </div>
-                <p className="mt-2 text-3xl font-bold text-emerald-800">{(MOCK_AGENTS.reduce((sum, a) => sum + a.rating, 0) / MOCK_AGENTS.length).toFixed(1)}</p>
-              </div>
-              <div className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm">
-                <div className="flex items-center gap-2">
-                  <TrendUp className="h-5 w-5 text-emerald-600" />
-                  <span className="text-sm font-medium text-stone-500">Total Transactions</span>
-                </div>
-                <p className="mt-2 text-3xl font-bold text-emerald-800">{MOCK_AGENTS.reduce((sum, a) => sum + a.totalTransactions, 0).toLocaleString()}</p>
-              </div>
-              <div className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm">
-                <div className="flex items-center gap-2">
-                  <Shield className="h-5 w-5 text-emerald-600" />
-                  <span className="text-sm font-medium text-stone-500">Total Bonded</span>
-                </div>
-                <p className="mt-2 text-3xl font-bold text-emerald-800">₦{MOCK_AGENTS.reduce((sum, a) => sum + a.bondedAmount, 0).toLocaleString()}</p>
-              </div>
-            </div>
 
-            {/* Agents Grid */}
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {filtered.map((agent) => (
-                <motion.div
-                  key={agent.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  onClick={() => setSelectedAgent(agent)}
-                  className="group relative overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm transition-all hover:shadow-md cursor-pointer"
+              <div className="mt-6 flex flex-wrap gap-3">
+                <button
+                  onClick={() => { setShowLogin(true); setShowRegister(false); }}
+                  className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-black text-emerald-700 shadow-lg transition hover:bg-emerald-50 active:scale-[0.98]"
                 >
-                  <div className="aspect-square overflow-hidden bg-stone-100">
-                    <img src={agent.photo} alt={agent.name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <div className="absolute top-2 left-2 right-2 flex justify-between">
-                      <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium border ${tierColors[agent.tier]}`}>
-                        {getTierLabel(agent.tier)} Tier
-                      </span>
-                      <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${statusColors[agent.status]}`}>
-                        {getStatusLabel(agent.status)}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="p-3">
-                    <h3 className="text-sm font-semibold text-stone-900">{agent.name}</h3>
-                    <p className="mt-1 text-xs text-stone-500">{agent.shopName}</p>
-                    <div className="mt-1 flex items-center gap-1 text-xs text-stone-500">
-                      <MapPinIcon className="h-3 w-3" weight="fill" />
-                      {agent.lga}, {agent.state}
-                    </div>
-                    <div className="mt-2 flex items-center justify-between">
-                      <div className="flex items-center gap-1">
-                        <Star className="h-3.5 w-3.5 text-amber-500" weight="fill" />
-                        <span className="text-sm font-medium text-stone-700">{agent.rating}</span>
-                      </div>
-                      <span className="text-xs text-stone-500">{agent.totalTransactions} txns</span>
-                    </div>
-                    <div className="mt-2 text-xs text-stone-500">
-                      Bonded: ₦{agent.bondedAmount.toLocaleString()} • Score: {agent.verificationScore}/100
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </>
-        )}
-
-        {activeTab === "audits" && (
-          <div className="space-y-4">
-            {[
-              { agent: "Adaeze Ibrahim", type: "Investment Monitoring", farm: "Amina Bello - Rice Farm", date: "2025-01-15", status: "completed", score: 95, photos: 12, issues: 0 },
-              { agent: "Amara Bello", type: "Farmer Verification", farm: "Ibrahim Musa - Maize Farm", date: "2025-01-14", status: "completed", score: 98, photos: 8, issues: 0 },
-              { agent: "Chidi Ochoga", type: "Input Verification", farm: "Grace Okafor - Soybean Farm", date: "2025-01-13", status: "pending_review", score: 87, photos: 6, issues: 1 },
-              { agent: "Fatima Abubakar", type: "Harvest Grading", farm: "Yusuf Abdullahi - Yam Farm", date: "2025-01-12", status: "flagged", score: 72, photos: 4, issues: 2 },
-              { agent: "Nneka Ogbu", type: "Crop Diagnosis", farm: "Fatima Ibrahim - Groundnut Farm", date: "2025-01-11", status: "completed", score: 94, photos: 10, issues: 0 },
-            ].map((audit, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm"
-              >
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h3 className="font-medium text-stone-900">{audit.type} Audit</h3>
-                    <p className="text-sm text-stone-500">{audit.agent} • {audit.farm} • {audit.date}</p>
-                  </div>
-                  <span className={`rounded-full px-3 py-1 text-xs font-medium ${audit.status === "completed" ? "bg-emerald-100 text-emerald-700" : audit.status === "pending_review" ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-700"}`}>
-                    {audit.status.replace("_", " ")}
-                  </span>
-                </div>
-                <div className="mt-4 grid grid-cols-4 gap-4 text-sm">
-                  <div><span className="text-stone-500">Score</span> <p className="font-bold text-emerald-700">{audit.score}/100</p></div>
-                  <div><span className="text-stone-500">Photos</span> <p className="font-bold">{audit.photos}</p></div>
-                  <div><span className="text-stone-500">Issues Found</span> <p className="font-bold">{audit.issues}</p></div>
-                  <div className="flex gap-2">
-                    <button className="flex-1 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700">
-                      <Eye className="mr-1 h-3 w-3" /> Review
-                    </button>
-                    <button className="flex-1 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-600">
-                      <PencilSimple className="mr-1 h-3 w-3" /> Annotate
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        )}
-
-        {activeTab === "analytics" && (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm">
-              <h3 className="text-sm font-medium text-stone-500">Agent Performance by Tier</h3>
-              <div className="mt-4 space-y-3">
-                {["platinum", "gold", "silver", "bronze"].map((tier) => (
-                  <div key={tier} className="flex items-center justify-between">
-                    <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${tierColors[tier]}`}>{getTierLabel(tier)}</span>
-                    <div className="flex items-center gap-2 w-32">
-                      <div className="flex-1 h-2 overflow-hidden rounded-full bg-stone-100">
-                        <div className="h-full rounded-full bg-emerald-500" style={{ width: tier === "platinum" ? "100%" : tier === "gold" ? "85%" : tier === "silver" ? "65%" : "40%" }} />
-                      </div>
-                      <span className="text-xs font-medium">{tier === "platinum" ? "98%" : tier === "gold" ? "92%" : tier === "silver" ? "78%" : "65%"}</span>
-                    </div>
-                  </div>
-                ))}
+                  <Key className="h-5 w-5" weight="fill" />
+                  Agent Login
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => { setShowRegister(true); setShowLogin(false); }}
+                  className="inline-flex items-center gap-2 rounded-xl border border-white/30 bg-white/10 px-5 py-3 text-sm font-bold text-white backdrop-blur hover:bg-white/15"
+                >
+                  <UserPlus className="h-5 w-4" />
+                  Register as Agent
+                </button>
               </div>
             </div>
-            <div className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm">
-              <h3 className="text-sm font-medium text-stone-500">Monthly Transactions</h3>
-              <div className="mt-4 h-32 flex items-end justify-between gap-1">
-                {["Jan", "Feb", "Mar", "Apr", "May", "Jun"].map((month, i) => (
-                  <div key={month} className="flex-1 flex flex-col items-center">
-                    <div className="w-full rounded-t bg-emerald-500" style={{ height: `${30 + i * 10}%` }} />
-                    <span className="mt-1 text-xs text-stone-500">{month}</span>
+
+            {/* Right — Silhouette / placeholder */}
+            <div className="hidden lg:flex items-center justify-center">
+              <div className="relative">
+                <div className="flex h-64 w-64 items-center justify-center rounded-full border-2 border-dashed border-white/20 bg-white/5">
+                  <div className="text-center">
+                    <User className="mx-auto h-16 w-16 text-white/30" weight="fill" />
+                    <p className="mt-3 text-sm font-bold text-white/50">Agent Portal</p>
+                    <p className="text-xs text-white/30">Login to access your dashboard</p>
                   </div>
-                ))}
-              </div>
-            </div>
-            <div className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm sm:col-span-2">
-              <h3 className="text-sm font-medium text-stone-500">Geographic Coverage (Benue State)</h3>
-              <div className="mt-4 grid grid-cols-3 gap-2 text-sm">
-                {["Gboko", "Makurdi", "Otukpo", "Katsina-Ala", "Vandeikya", "Gwer West", "Buruku", "Tarka", "Kwande"].map((lga) => (
-                  <div key={lga} className="rounded-lg bg-emerald-50 px-3 py-2 text-center text-emerald-700">{lga}</div>
-                ))}
+                </div>
+                {/* Floating dots */}
+                <div className="absolute -left-6 top-8 h-3 w-3 rounded-full bg-emerald-400/40 animate-pulse" />
+                <div className="absolute -right-4 bottom-12 h-4 w-4 rounded-full bg-emerald-300/30 animate-pulse" />
+                <div className="absolute left-12 -bottom-4 h-2 w-2 rounded-full bg-white/20 animate-pulse" />
               </div>
             </div>
           </div>
-        )}
+        </div>
 
-        {/* Agent Detail Modal */}
-        {selectedAgent && (
+        {/* Login Modal */}
+        {showLogin && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
-            onClick={() => setSelectedAgent(null)}
+            onClick={() => setShowLogin(false)}
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white shadow-2xl"
+              className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl"
             >
-              <div className="relative aspect-square overflow-hidden">
-                <img src={selectedAgent.photo} alt={selectedAgent.name} className="h-full w-full object-cover" />
-                <button onClick={() => setSelectedAgent(null)} className="absolute right-3 top-3 rounded-full bg-black/40 p-1.5 text-white backdrop-blur-sm hover:bg-black/60">
-                  <X className="h-4 w-4" />
-                </button>
-                <div className="absolute bottom-3 left-3 right-3 flex flex-wrap gap-1.5">
-                  <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium border ${tierColors[selectedAgent.tier]}`}>
-                    {getTierLabel(selectedAgent.tier)} Tier
-                  </span>
-                  <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${statusColors[selectedAgent.status]}`}>
-                    {getStatusLabel(selectedAgent.status)}
-                  </span>
-                  <span className="rounded-full bg-emerald-600/90 px-2 py-0.5 text-[10px] font-medium text-white backdrop-blur-sm">
-                    <SealCheck className="mr-1 inline h-3 w-3" weight="fill" />
-                    Verified: {selectedAgent.verificationScore}%
-                  </span>
+              <div className="mb-6 text-center">
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100">
+                  <Key className="h-7 w-7 text-emerald-600" weight="fill" />
                 </div>
+                <h3 className="mt-3 text-lg font-bold text-stone-900">Agent Portal Login</h3>
+                <p className="mt-1 text-sm text-stone-500">Enter your agent credentials to continue</p>
               </div>
-              <div className="p-5">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h3 className="text-lg font-bold text-stone-900">{selectedAgent.name}</h3>
-                    <p className="mt-1 text-sm text-stone-500">{selectedAgent.shopName}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-2xl font-bold text-emerald-800">{selectedAgent.rating}</p>
-                    <div className="flex items-center gap-1">
-                      <Star className="h-4 w-4 text-amber-500" weight="fill" />
-                      <span className="text-xs text-stone-500">{selectedAgent.totalTransactions} transactions</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-4 grid grid-cols-2 gap-3 text-sm text-stone-600">
-                  <div><span className="font-medium">Phone:</span> {selectedAgent.phone}</div>
-                  <div><span className="font-medium">Email:</span> {selectedAgent.email}</div>
-                  <div><span className="font-medium">Location:</span> {selectedAgent.location}</div>
-                  <div><span className="font-medium">LGA:</span> {selectedAgent.lga}, {selectedAgent.state}</div>
-                  <div><span className="font-medium">Joined:</span> {selectedAgent.joinedDate}</div>
-                  <div><span className="font-medium">Last Active:</span> {selectedAgent.lastActive}</div>
-                  <div className="col-span-2"><span className="font-medium">Shop Address:</span> {selectedAgent.shopAddress}</div>
-                  <div className="col-span-2"><span className="font-medium">Bonded Amount:</span> ₦{selectedAgent.bondedAmount.toLocaleString()}</div>
-                </div>
-                <div className="mt-4">
-                  <h4 className="text-sm font-medium text-stone-700">Skills & Certifications</h4>
-                  <div className="mt-2 flex flex-wrap gap-1.5">
-                    {selectedAgent.skills.map((skill) => (
-                      <span key={skill} className="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700">
-                        {skill}
-                      </span>
-                    ))}
+
+              <form onSubmit={handleDemoLogin} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-stone-700">Email</label>
+                  <div className="relative mt-1">
+                    <Envelope className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400" />
+                    <input
+                      type="email"
+                      value={loginEmail}
+                      onChange={(e) => setLoginEmail(e.target.value)}
+                      placeholder="agent@agrinovva.ng"
+                      className="w-full rounded-lg border border-stone-200 bg-white pl-10 pr-4 py-2.5 text-sm outline-none focus:border-emerald-500"
+                    />
                   </div>
                 </div>
-                <div className="mt-4 flex gap-3">
-                  <button className="flex-1 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-700">
-                    <Eye className="mr-1 h-4 w-4" /> View Field Reports
+                <div>
+                  <label className="block text-sm font-medium text-stone-700">Password</label>
+                  <div className="relative mt-1">
+                    <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400" />
+                    <input
+                      type="password"
+                      value={loginPassword}
+                      onChange={(e) => setLoginPassword(e.target.value)}
+                      placeholder="Enter password"
+                      className="w-full rounded-lg border border-stone-200 bg-white pl-10 pr-4 py-2.5 text-sm outline-none focus:border-emerald-500"
+                    />
+                  </div>
+                </div>
+                {loginError && (
+                  <p className="rounded-lg bg-red-50 px-3 py-2 text-xs text-red-600">{loginError}</p>
+                )}
+                <div className="rounded-lg bg-emerald-50 border border-emerald-200 px-3 py-2">
+                  <p className="text-[11px] font-medium text-emerald-700">Demo: Enter any email + password to log in</p>
+                </div>
+                <div className="flex gap-3 pt-2">
+                  <button type="button" onClick={() => setShowLogin(false)} className="flex-1 rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-sm font-medium text-stone-600 hover:bg-stone-50">
+                    Cancel
                   </button>
-                  <button className="flex-1 rounded-xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-white">
-                    <TrendUp className="mr-1 h-4 w-4" /> Performance History
+                  <button type="submit" className="flex-1 rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-600 transition">
+                    Login →
                   </button>
                 </div>
-              </div>
+              </form>
             </motion.div>
           </motion.div>
         )}
 
-        {/* Add Agent Modal */}
-        {showAddAgent && (
+        {/* Register Modal */}
+        {showRegister && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
-            onClick={() => setShowAddAgent(false)}
+            onClick={() => setShowRegister(false)}
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl"
+              className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl max-h-[90vh] overflow-y-auto"
             >
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-bold text-stone-900">Add New Agent</h3>
-                <button onClick={() => setShowAddAgent(false)} className="rounded-lg p-1.5 text-stone-400 hover:bg-stone-100">
-                  <X className="h-5 w-5" />
-                </button>
+              <div className="mb-6 text-center">
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100">
+                  <UserPlus className="h-7 w-7 text-emerald-600" weight="fill" />
+                </div>
+                <h3 className="mt-3 text-lg font-bold text-stone-900">Register as Extension Agent</h3>
+                <p className="mt-1 text-sm text-stone-500">Join AgriNovva's verified agent network</p>
               </div>
-              <form className="space-y-4">
+
+              <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); alert("Registration submitted! (Demo)"); setShowRegister(false); }}>
                 <div>
                   <label className="block text-sm font-medium text-stone-700">Full Name</label>
-                  <input type="text" className="mt-1 w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-500" placeholder="Enter agent name" />
+                  <div className="relative mt-1">
+                    <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400" />
+                    <input type="text" placeholder="e.g., Adaeze Ibrahim" className="w-full rounded-lg border border-stone-200 bg-white pl-10 pr-4 py-2.5 text-sm outline-none focus:border-emerald-500" />
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-stone-700">Phone Number</label>
-                  <input type="tel" className="mt-1 w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-500" placeholder="080xxxxxxxx" />
+                  <div className="relative mt-1">
+                    <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400" />
+                    <input type="tel" placeholder="080xxxxxxxx" className="w-full rounded-lg border border-stone-200 bg-white pl-10 pr-4 py-2.5 text-sm outline-none focus:border-emerald-500" />
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-stone-700">Email</label>
-                  <input type="email" className="mt-1 w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-500" placeholder="agent@agrinovva.ng" />
+                  <div className="relative mt-1">
+                    <Envelope className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400" />
+                    <input type="email" placeholder="agent@agrinovva.ng" className="w-full rounded-lg border border-stone-200 bg-white pl-10 pr-4 py-2.5 text-sm outline-none focus:border-emerald-500" />
+                  </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-stone-700">Shop Name</label>
-                  <input type="text" className="mt-1 w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-500" placeholder="e.g., Agro Services Ltd" />
+                  <label className="block text-sm font-medium text-stone-700">Shop / Business Name</label>
+                  <div className="relative mt-1">
+                    <Buildings className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400" />
+                    <input type="text" placeholder="e.g., Ibrahim Agro Services" className="w-full rounded-lg border border-stone-200 bg-white pl-10 pr-4 py-2.5 text-sm outline-none focus:border-emerald-500" />
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-stone-700">LGA</label>
-                  <select className="mt-1 w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-500">
-                    <option value="">Select LGA</option>
-                    <option value="Gboko">Gboko</option>
-                    <option value="Makurdi">Makurdi</option>
-                    <option value="Otukpo">Otukpo</option>
-                    <option value="Katsina-Ala">Katsina-Ala</option>
-                    <option value="Vandeikya">Vandeikya</option>
-                    <option value="Gwer West">Gwer West</option>
-                    <option value="Buruku">Buruku</option>
-                    <option value="Tarka">Tarka</option>
-                    <option value="Kwande">Kwande</option>
-                  </select>
+                  <div className="relative mt-1">
+                    <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400" />
+                    <select className="w-full rounded-lg border border-stone-200 bg-white pl-10 pr-4 py-2.5 text-sm outline-none focus:border-emerald-500">
+                      <option value="">Select LGA</option>
+                      <option value="Gboko">Gboko</option>
+                      <option value="Makurdi">Makurdi</option>
+                      <option value="Otukpo">Otukpo</option>
+                      <option value="Katsina-Ala">Katsina-Ala</option>
+                      <option value="Vandeikya">Vandeikya</option>
+                      <option value="Gwer West">Gwer West</option>
+                      <option value="Buruku">Buruku</option>
+                      <option value="Tarka">Tarka</option>
+                      <option value="Kwande">Kwande</option>
+                    </select>
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-stone-700">Initial Tier</label>
-                  <select className="mt-1 w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-500">
-                    <option value="bronze">Bronze</option>
-                    <option value="silver">Silver</option>
-                    <option value="gold">Gold</option>
-                    <option value="platinum">Platinum</option>
-                  </select>
-                </div>
-                <div className="flex gap-3 pt-4">
-                  <button type="button" onClick={() => setShowAddAgent(false)} className="flex-1 rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-sm font-medium text-stone-600 hover:bg-stone-50">
+                <div className="flex gap-3 pt-2">
+                  <button type="button" onClick={() => setShowRegister(false)} className="flex-1 rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-sm font-medium text-stone-600 hover:bg-stone-50">
                     Cancel
                   </button>
-                  <button type="submit" className="flex-1 rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-600">
-                    Add Agent
+                  <button type="submit" className="flex-1 rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-600 transition">
+                    Register →
                   </button>
                 </div>
               </form>

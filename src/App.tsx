@@ -14,6 +14,7 @@ import AgentNetwork from "./components/AgentNetwork";
 import InsuranceProducts from "./components/InsuranceProducts";
 import GovernmentDashboard from "./components/GovernmentDashboard";
 import DownloadApp from "./components/DownloadApp";
+import AgentPortal from "./components/AgentPortal";
 import InputVerification from "./components/InputVerification";
 import PriceContracts from "./components/PriceContracts";
 
@@ -105,6 +106,7 @@ export default function App() {
   const [showLogisticsModal, setShowLogisticsModal] = useState(false);
   const [logisticsCode, setLogisticsCode] = useState("");
   const [logisticsResult, setLogisticsResult] = useState<SupplyChainShipment | null>(null);
+  const [agentPortal, setAgentPortal] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("ah_cart", JSON.stringify(cart));
@@ -160,6 +162,7 @@ export default function App() {
   }, [cart]);
 
   const availableTabs = TABS.filter((t) => t.roles.includes(role));
+  const allTabs = agentPortal ? [...availableTabs, { id: "agent-portal" as TabId, label: "Agent Portal", icon: Users, roles: ["farmer", "buyer", "logistics" as UserRole] }] : availableTabs;
   const dashConfig = ROLE_DASHBOARD[role];
 
   return (
@@ -172,7 +175,7 @@ export default function App() {
       {/* Tab Navigation */}
       <div className="sticky top-16 z-40 border-b border-stone-200 bg-white/90 backdrop-blur-lg">
         <div className="mx-auto flex max-w-7xl items-center gap-1 px-4 sm:px-6">
-          {availableTabs.map((t) => {
+          {allTabs.map((t) => {
             const Icon = t.icon;
             const active = activeTab === t.id;
             return (
@@ -206,12 +209,13 @@ export default function App() {
           {activeTab === "supply-chain" && <SupplyChainTracker />}
           {activeTab === "agri-advisor" && <AgriToolsAdvisor />}
           {activeTab === "investment-exchange" && <InvestmentExchange />}
-          {activeTab === "agent-network" && <AgentNetwork onNavigate={setActiveTab} role={role} />}
+          {activeTab === "agent-network" && <AgentNetwork onNavigate={setActiveTab} role={role} onAgentLogin={() => { setAgentPortal(true); setActiveTab("agent-portal"); }} />}
           {activeTab === "insurance" && <InsuranceProducts />}
           {activeTab === "government" && <GovernmentDashboard onNavigate={setActiveTab} />}
           {activeTab === "input-verification" && <InputVerification />}
           {activeTab === "price-contracts" && <PriceContracts />}
           {activeTab === "download-app" && <DownloadApp />}
+          {activeTab === "agent-portal" && <AgentPortal onNavigate={setActiveTab} onLogout={() => { setAgentPortal(false); setActiveTab("agent-network"); }} />}
           {activeTab === "dashboard" && (
             <section className="py-8 sm:py-12">
               <div className="mx-auto max-w-7xl px-4 sm:px-6">

@@ -42,28 +42,28 @@ const EXTENSION_AGENTS = [
     location: "Gboko, Benue",
     phone: "+234 803 XXX 4521",
     specialties: ["Cassava", "Yam", "Soil Testing"],
-    avatar: "/images/adaeze.jpg",
+    avatar: "/images/Adaeze.jpg",
   },
   {
     name: "Tunde Bakare",
     location: "Makurdi, Benue",
     phone: "+234 805 XXX 7832",
     specialties: ["Rice", "Sorghum", "Pest Control"],
-    avatar: "/images/tunde.jpg",
+    avatar: "/images/Tunde.jpg",
   },
   {
     name: "Amara Nwosu",
     location: "Otukpo, Benue",
     phone: "+234 809 XXX 1245",
     specialties: ["Vegetables", "Organic Farming"],
-    avatar: "/images/amara.jpg",
+    avatar: "/images/Amara.jpg",
   },
   {
     name: "Fatima Abdullahi",
     location: "Guma, Benue",
     phone: "+234 802 XXX 6789",
     specialties: ["Millet", "Cowpea", "Irrigation"],
-    avatar: "/images/fatima.jpg",
+    avatar: "/images/Fatima.jpg",
   },
 ];
 
