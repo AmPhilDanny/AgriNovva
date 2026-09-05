@@ -99,11 +99,11 @@ export default function DownloadApp() {
 
               <div className="mt-5 grid grid-cols-2 gap-2 text-xs sm:grid-cols-3">
                 {[
-                  { icon: WifiSlash, label: "100% Offline", sub: "SQLite + TFLite" },
+                  { icon: WifiSlash, label: "100% Offline", sub: "No internet needed" },
                   { icon: Translate, label: "5 Languages + Voice", sub: "HA/YO/IG/PCM/EN" },
                   { icon: ShieldCheck, label: "Agent Verified", sub: "NIN + farm geo-tag" },
-                  { icon: Leaf, label: "38 Diseases", sub: "Early Blight etc." },
-                  { icon: DeviceMobile, label: "Capacitor + SQLite", sub: "Camera + GPS" },
+                  { icon: Leaf, label: "38 Diseases", sub: "AI-powered detection" },
+                  { icon: DeviceMobile, label: "Works on Any Phone", sub: "Camera + GPS" },
                   { icon: Star, label: "4.8 Rating", sub: "Benue pilot" },
                 ].map((f) => {
                   const Icon = f.icon;
