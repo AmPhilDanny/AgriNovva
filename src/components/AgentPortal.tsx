@@ -142,27 +142,30 @@ export default function AgentPortal({ onNavigate, onLogout }: { onNavigate?: (t:
           </div>
         </div>
 
-        {/* Agent Services Hub */}
-        <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 shadow-sm">
+        {/* Agent Services Hub — merged, deduplicated */}
+        <div className="mb-6 rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-teal-50 p-4 sm:p-5 shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <h3 className="text-sm font-bold text-emerald-900">Agent Services Hub</h3>
+            <div>
+              <h3 className="text-sm font-bold text-emerald-900">Agent Services Hub</h3>
+              <p className="text-[11px] text-stone-500">Everything you can do from this portal — one tap to open</p>
+            </div>
             <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-emerald-700 border border-emerald-200">Tap any card → opens service</span>
           </div>
-          <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {[
-              { id: "agri-advisor" as TabId, label: "Crop Diagnosis", sub: "AI + field photo", icon: Leaf, color: "bg-emerald-600" },
-              { id: "input-verification" as TabId, label: "Input Verification", sub: "Seed & fertilizer QR", icon: Factory, color: "bg-blue-600" },
-              { id: "supply-chain" as TabId, label: "Harvest & Supply Chain", sub: "Grading + logistics", icon: Truck, color: "bg-amber-600" },
-              { id: "investment-exchange" as TabId, label: "Investment Monitoring", sub: "Track farmer funds", icon: PiggyBank, color: "bg-emerald-700" },
-              { id: "price-contracts" as TabId, label: "Price & Escrow", sub: "Floor price + escrow", icon: Calculator, color: "bg-slate-700" },
-              { id: "insurance" as TabId, label: "Insurance Assist", sub: "Enroll & claims", icon: Shield, color: "bg-teal-600" },
-              { id: "marketplace" as TabId, label: "Marketplace Oversight", sub: "Listings & orders", icon: ShoppingCart, color: "bg-stone-700" },
-              { id: "government" as TabId, label: "Government Report", sub: "LGA submission", icon: Buildings, color: "bg-purple-600" },
+              { id: "agri-advisor" as TabId, label: "AI Crop Diagnosis", sub: "38 diseases, offline TFLite + voice", icon: Camera, color: "bg-emerald-600" },
+              { id: "input-verification" as TabId, label: "Input Verification", sub: "Seed & fertilizer QR scan", icon: Factory, color: "bg-blue-600" },
+              { id: "supply-chain" as TabId, label: "Harvest & Supply Chain", sub: "Grading, logistics, escrow", icon: Truck, color: "bg-amber-600" },
+              { id: "investment-exchange" as TabId, label: "Investment Monitoring", sub: "Track farmer funds + ROI", icon: PiggyBank, color: "bg-emerald-700" },
+              { id: "price-contracts" as TabId, label: "Price & Escrow", sub: "Floor price + forward contracts", icon: Calculator, color: "bg-slate-700" },
+              { id: "insurance" as TabId, label: "Insurance Assist", sub: "Enroll farmers + claims", icon: Shield, color: "bg-teal-600" },
+              { id: "marketplace" as TabId, label: "Marketplace Oversight", sub: "Listings, orders, verification", icon: ShoppingCart, color: "bg-stone-700" },
+              { id: "government" as TabId, label: "LGA Reports & Compliance", sub: "Government submission", icon: Buildings, color: "bg-purple-600" },
             ].map((s) => {
               const Icon = s.icon;
               return (
                 <button
-                  key={s.id}
+                  key={s.label}
                   onClick={() => onNavigate?.(s.id)}
                   className="group flex items-center gap-3 rounded-xl border border-white bg-white p-3 text-left shadow-sm transition-all hover:shadow-md hover:border-emerald-200"
                 >
@@ -197,35 +200,6 @@ export default function AgentPortal({ onNavigate, onLogout }: { onNavigate?: (t:
 
         {activeTab === "agents" && (
           <>
-            {/* Your Agent Capabilities */}
-            <div className="mb-6 rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-teal-50 p-4 sm:p-5 shadow-sm">
-              <h3 className="text-sm font-bold text-emerald-900">Your Agent Capabilities</h3>
-              <p className="mt-1 text-xs text-stone-500">Everything you can do from this portal — one tap to start</p>
-              <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
-                {[
-                  { icon: UserPlus, label: "Farmer Registration", sub: "NIN + geo-tag", color: "bg-emerald-100 text-emerald-700" },
-                  { icon: Camera, label: "AI Crop Diagnosis", sub: "38 diseases, offline", color: "bg-sky-100 text-sky-700" },
-                  { icon: Factory, label: "Input Verification", sub: "Seed & fertilizer QR", color: "bg-blue-100 text-blue-700" },
-                  { icon: PiggyBank, label: "Investment Monitoring", sub: "Track farmer funds", color: "bg-amber-100 text-amber-700" },
-                  { icon: Leaf, label: "Harvest Grading", sub: "Quality + pricing", color: "bg-violet-100 text-violet-700" },
-                  { icon: Buildings, label: "LGA Reports", sub: "Gov compliance", color: "bg-purple-100 text-purple-700" },
-                ].map((f) => {
-                  const Icon = f.icon;
-                  return (
-                    <div key={f.label} className="flex items-center gap-2.5 rounded-xl bg-white px-3 py-2.5 shadow-sm border border-white">
-                      <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${f.color}`}>
-                        <Icon className="h-4 w-4" weight="fill" />
-                      </span>
-                      <div className="min-w-0">
-                        <p className="text-xs font-bold text-stone-900 leading-tight">{f.label}</p>
-                        <p className="text-[10px] text-stone-500 leading-tight">{f.sub}</p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
             {/* Filters */}
             <div className="mb-6 flex flex-wrap gap-3">
               <div className="flex-1 min-w-[200px]">
