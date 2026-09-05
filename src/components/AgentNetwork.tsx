@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   UserPlus, Key, Leaf, Shield, Camera, TrendUp,
-  Lock, User, Phone, Envelope, MapPin, CheckCircle, ArrowRight,
+  Lock, User, Phone, Envelope, MapPin, CheckCircle, ArrowRight, Buildings,
 } from "@phosphor-icons/react";
 import type { TabId, UserRole } from "../types";
 
