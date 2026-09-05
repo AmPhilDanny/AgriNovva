@@ -172,23 +172,25 @@ export default function App() {
 
       {/* Tab Navigation */}
       <div className="sticky top-16 z-40 border-b border-stone-200 bg-white/90 backdrop-blur-lg">
-        <div className="mx-auto flex max-w-7xl items-center gap-1 px-4 sm:px-6">
-          {allTabs.map((t) => {
-            const Icon = t.icon;
-            const active = activeTab === t.id;
-            return (
-              <button
-                key={t.id}
-                onClick={() => setActiveTab(t.id)}
-                className={`flex items-center gap-2 border-b-2 px-4 py-3 text-xs font-medium transition-all sm:text-sm ${
-                  active ? "border-emerald-600 text-emerald-700" : "border-transparent text-stone-500 hover:border-stone-300 hover:text-stone-700"
-                }`}
-              >
-                <Icon className="h-4 w-4" weight={active ? "fill" : "regular"} />
-                {t.label}
-              </button>
-            );
-          })}
+        <div className="mx-auto max-w-7xl overflow-x-auto px-4 sm:px-6">
+          <div className="flex flex-wrap items-center gap-x-1 gap-y-0 py-1">
+            {allTabs.map((t) => {
+              const Icon = t.icon;
+              const active = activeTab === t.id;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => setActiveTab(t.id)}
+                  className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap border-b-2 px-3 py-2.5 text-[11px] font-medium transition-all sm:gap-2 sm:px-4 sm:text-xs lg:text-sm ${
+                    active ? "border-emerald-600 text-emerald-700" : "border-transparent text-stone-500 hover:border-stone-300 hover:text-stone-700"
+                  }`}
+                >
+                  <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" weight={active ? "fill" : "regular"} />
+                  {t.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
