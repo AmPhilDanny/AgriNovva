@@ -58,7 +58,7 @@ export default function AgentNetwork({ onNavigate, role, onAgentLogin }: AgentNe
             <p className="mt-1 text-sm text-stone-500">Our agents are at solar-powered hubs across every LGA in Benue State</p>
             <div className="mt-4 space-y-3">
               {[
-                { step: "1", title: "Visit a Hub", desc: "Walk into any AgriNovva Farmer Support Centre at Gboko, Makurdi, Otukpo, Katsina-Ala, Vandeikya, or Gwer West market." },
+                { step: "1", title: "Visit a Hub", desc: "Walk into any AgriNovva Farmer Support Centre near you — we have hubs in communities across every state in Nigeria." },
                 { step: "2", title: "Scan the QR Code", desc: "At the solar board, scan the QR code to download the app or connect to an agent instantly." },
                 { step: "3", title: "Call an Agent", desc: "Dial the toll-free line 0800-AGRI-NOV, use USSD code *700*333# from any phone, or tap 'Agent Login' below to reach your nearest verified agent." },
                 { step: "4", title: "Agent Comes to You", desc: "No transport? Our agents can visit your farm for a small fee covering transport and diagnosis. To save costs, bring a branch of the diseased crop to the nearest hub — our agents will scan and diagnose it on the spot for just a token." },

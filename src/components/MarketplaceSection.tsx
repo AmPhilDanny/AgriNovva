@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+﻿import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Plus, Minus, Star, MapPin, SealCheck, ShoppingCart, MagnifyingGlass, Sliders, ArrowRight, Check, Leaf, Shield, Users, Lock, Warning } from "@phosphor-icons/react";
 import type { ProduceItem, CartItem, UserRole, TabId } from "../types";
@@ -169,7 +169,7 @@ export default function MarketplaceSection({ cart, onAddToCart, onRemoveFromCart
               </span>
               <div>
                 <p className="text-sm font-bold text-amber-900">Register and verify with our agents to post and sell your produce</p>
-                <p className="mt-0.5 text-xs leading-relaxed text-amber-700">Verified farmers get a green badge, higher visibility & escrow protection. Visit any agent in Benue (Gboko, Makurdi, Otukpo…) to verify — takes 5 mins.</p>
+                <p className="mt-0.5 text-xs leading-relaxed text-amber-700">Verified farmers get a green badge, higher visibility & escrow protection. Visit any AgriNovva agent near you to verify — takes 5 mins. Dial *700*333# to find the closest hub.</p>
               </div>
             </div>
             <div className="flex shrink-0 gap-2">
@@ -418,7 +418,7 @@ export default function MarketplaceSection({ cart, onAddToCart, onRemoveFromCart
                 <div className="flex-1">
                   <h3 className="text-base font-bold text-stone-900">Register and verify with our agents to post and sell your produce</h3>
                   <p className="mt-1.5 text-sm leading-relaxed text-stone-600">
-                    Buyers can browse and buy instantly. Farmers must be <span className="font-semibold text-emerald-700">verified by an AgriNovva agent</span> before listing. Visit any agent in Benue (Gboko, Makurdi, Otukpo) — they’ll check your farm, NIN &amp; inputs, then unlock posting + escrow.
+                    Buyers can browse and buy instantly. Farmers must be <span className="font-semibold text-emerald-700">verified by an AgriNovva agent</span> before listing. Visit any AgriNovva agent near you — they’ll check your farm, NIN &amp; inputs, then unlock posting + escrow. Dial *700*333# to find the closest hub.
                   </p>
                   <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2.5 text-xs leading-relaxed text-amber-800">
                     <span className="font-bold">Unverified farmers</span> can browse, add to cart (as buyer), and use AI Agronomy — but <span className="font-bold">Post Produce</span> stays locked until verified.

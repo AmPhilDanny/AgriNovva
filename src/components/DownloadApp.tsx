@@ -314,8 +314,9 @@ export default function DownloadApp() {
         {/* Bottom CTA */}
         <div className="mt-12 text-center">
           <p className="text-sm text-stone-500">
-            Questions? Call our helpline: <span className="font-bold text-emerald-700">0800-AGRI-NOV</span> (toll-free)
-            or visit any extension office in Gboko, Makurdi, Otukpo, or Vandeikya.
+            Questions? Call our helpline: <span className="font-bold text-emerald-700">0800-AGRI-NOV</span> (toll-free){" "}
+            or dial USSD code <span className="font-bold text-emerald-700">*700*333#</span> from any phone.
+            We have extension offices in every community across Nigeria.
           </p>
         </div>
       </div>
