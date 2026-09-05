@@ -98,7 +98,7 @@ const MOCK_OPPORTUNITIES: FarmingOpportunity[] = [
     agentVerified: true,
     insuranceIncluded: true,
     images: [
-      "https://images.unsplash.com/photo-1624628639859-c31b5e6e5c0b?w=600&q=80",
+      "/images/soyabean.jpg",
     ],
     description: "Soybean farmer with 8 years experience. TGx 1987-10F variety resistant to rust. Agent-verified. Insurance covers pest outbreak and drought.",
     plantingDate: "2025-06-15",
@@ -123,7 +123,7 @@ const MOCK_OPPORTUNITIES: FarmingOpportunity[] = [
     agentVerified: true,
     insuranceIncluded: false,
     images: [
-      "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=600&q=80",
+      "/images/Yams.jpg",
     ],
     description: "Yam farmer using improved seed yams. 10 years experience. No insurance available for yam yet. Agent monitoring weekly with photo evidence.",
     plantingDate: "2025-04-01",
@@ -148,7 +148,7 @@ const MOCK_OPPORTUNITIES: FarmingOpportunity[] = [
     agentVerified: true,
     insuranceIncluded: true,
     images: [
-      "https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?w=600&q=80",
+      "/images/groundnut.jpg",
     ],
     description: "Groundnut farmer with SAMNUT 24 variety. 9 years experience. High demand from oil processors. Full insurance coverage. Agent-verified.",
     plantingDate: "2025-06-01",
