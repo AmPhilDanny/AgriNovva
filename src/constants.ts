@@ -2,8 +2,8 @@ import type { ProduceItem, SupplyChainShipment, MarketPrice, AdvisoryTopic } fro
 
 export const BRAND = {
   name: "AgriNovva",
-  tagline: "From Farm to Fork, Transparently",
-  description: "Empowering farmers, buyers, and logistics partners with a transparent, AI-driven agricultural marketplace.",
+  tagline: "From Seed to Sold",
+  description: "AI-powered crop diagnosis, agent-verified inputs, cold-chain logistics, real-time market prices, and escrow payment protection — one trusted network for Nigeria's 40 million smallholder farmers.",
 };
 
 export const INITIAL_PRODUCE: ProduceItem[] = [

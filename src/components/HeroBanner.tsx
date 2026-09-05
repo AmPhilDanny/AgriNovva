@@ -36,14 +36,17 @@ export default function HeroBanner({ role }: HeroBannerProps) {
               GS26 AgriTech Innovation Summit
             </div>
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
-              Fresh from the{" "}
+              From{" "}
               <span className="bg-gradient-to-r from-emerald-300 to-amber-300 bg-clip-text text-transparent">
-                Farm
+                Seed
+              </span>{" "}
+              to{" "}
+              <span className="bg-gradient-to-r from-amber-300 to-emerald-300 bg-clip-text text-transparent">
+                Sold
               </span>
-              , Direct to You
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-emerald-100/80 sm:text-lg">
-              Nigeria's trusted platform connecting smallholder farmers with buyers and logistics partners. Transparent pricing, quality guaranteed, and AI-powered agronomy support.
+              AI-powered crop diagnosis. Agent-verified inputs. Cold-chain logistics. Real-time market prices. Escrow payment protection. One trusted network connecting Nigeria's 40 million smallholder farmers to the full agricultural value chain.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <button className="inline-flex items-center gap-2 rounded-xl bg-amber-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-amber-500/25 transition-all hover:bg-amber-400 active:scale-[0.98]">
